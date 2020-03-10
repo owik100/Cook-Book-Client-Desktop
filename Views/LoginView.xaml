@@ -18,6 +18,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
@@ -26,17 +27,22 @@
             Logowanie
         </TextBlock>
 
-        <TextBlock Grid.Row="1" Grid.Column="1">
-             Username:
+        <TextBlock x:Name="ErrorMessage" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                   Margin="0 0 0 20" Foreground="red" MaxWidth="300"
+                   TextWrapping="Wrap" Visibility="{Binding IsErrorVisible, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Collapsed}">
         </TextBlock>
-        <TextBox x:Name="UserName" Grid.Row="1"  Grid.Column="2" MinWidth="150" Margin="0 0 0 10"/>
 
         <TextBlock Grid.Row="2" Grid.Column="1">
              Username:
         </TextBlock>
-        <PasswordBox x:Name="Password" Grid.Row="2"  Grid.Column="2" MinWidth="150"  Margin="0 0 0 10"/>
+        <TextBox x:Name="UserName" Grid.Row="2"  Grid.Column="2" MinWidth="350" Margin="0 0 0 10"/>
 
-        <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Padding="20 5" 
+        <TextBlock Grid.Row="3" Grid.Column="1">
+             Username:
+        </TextBlock>
+        <PasswordBox x:Name="Password" Grid.Row="3"  Grid.Column="2" MinWidth="350"  Margin="0 0 0 10"/>
+
+        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Padding="20 5" 
                 HorizontalAlignment="Center" x:Name="LogIn">
             Login
         </Button>
