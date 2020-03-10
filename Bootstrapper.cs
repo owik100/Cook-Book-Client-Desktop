@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
-using Cook_Book_Client_Desktop.Helpers;
 using Cook_Book_Client_Desktop.ViewModels;
+using Cook_Book_Client_Desktop_Library.API;
+using Cook_Book_Client_Desktop_Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace Cook_Book_Client_Desktop
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<ILoggedUser, LoggedUser>()
                 .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()

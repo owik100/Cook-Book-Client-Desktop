@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using Cook_Book_Client_Desktop.Helpers;
+using Cook_Book_Client_Desktop_Library.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,9 +86,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
 		{
 			try
 			{
-				ErrorMessage = "Connecting";
+				ErrorMessage = "Connecting...";
 				var result = await _apiHelper.Authenticate(UserName, Password);
 				ErrorMessage = "";
+
+				await _apiHelper.GetLoggedUserData(result.Access_Token);
 			}
 			catch (Exception ex)
 			{
