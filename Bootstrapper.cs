@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Cook_Book_Client_Desktop.Helpers;
 using Cook_Book_Client_Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Cook_Book_Client_Desktop
 {
@@ -16,6 +18,11 @@ namespace Cook_Book_Client_Desktop
         public Bootstrapper()
         {
             Initialize();
+
+            ConventionManager.AddElementConvention<PasswordBox>(
+            PasswordBoxHelper.BoundPasswordProperty,
+            "Password",
+            "PasswordChanged");
         }
 
         protected override void Configure()
@@ -24,7 +31,8 @@ namespace Cook_Book_Client_Desktop
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>();
+                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)
