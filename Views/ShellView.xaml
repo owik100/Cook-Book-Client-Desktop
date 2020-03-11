@@ -5,10 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
+        Title="Cook Book" MinHeight="450" MinWidth="800"  Height="450"   Width="800">
     <Grid>
-        <ContentControl x:Name="ActiveItem" Margin="5">
-            
-        </ContentControl>
+
+        <Grid.RowDefinitions>
+
+        </Grid.RowDefinitions>
+
+        
+        <StackPanel>
+            <local:LogoView Height="80"  />
+            <ContentControl x:Name="ActiveItem" Margin="5">
+
+            </ContentControl>
+        </StackPanel>
+
+       
     </Grid>
 </Window>

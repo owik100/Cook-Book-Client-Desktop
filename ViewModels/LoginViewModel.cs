@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Client_Desktop_Library.API;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
 		private string _userName;
 		private string _password;
 		private IAPIHelper _apiHelper;
+		private IEventAggregator _event;
 
-		public LoginViewModel(IAPIHelper apiHelper)
+		public LoginViewModel(IAPIHelper apiHelper, IEventAggregator eventAggregator)
 		{
 			_apiHelper = apiHelper;
+			_event = eventAggregator;
 		}
 
 		public string UserName
@@ -91,6 +94,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 				ErrorMessage = "";
 
 				await _apiHelper.GetLoggedUserData(result.Access_Token);
+
+				_event.BeginPublishOnUIThread(new LogOnEvent());
 			}
 			catch (Exception ex)
 			{

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
-             mc:Ignorable="d" Background="Wheat" FontSize="24" 
+             mc:Ignorable="d" Background="White" FontSize="24" 
              d:DesignHeight="450" Width="600">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,13 +32,13 @@
                    TextWrapping="Wrap" Visibility="{Binding IsErrorVisible, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Collapsed}">
         </TextBlock>
 
-        <TextBlock Grid.Row="2" Grid.Column="1">
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin=" 0 0 10 0">
              Username:
         </TextBlock>
         <TextBox x:Name="UserName" Grid.Row="2"  Grid.Column="2" MinWidth="350" Margin="0 0 0 10"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="1">
-             Username:
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin=" 0 0 10 0">
+             Password:
         </TextBlock>
         <PasswordBox x:Name="Password" Grid.Row="3"  Grid.Column="2" MinWidth="350"  Margin="0 0 0 10"/>
 

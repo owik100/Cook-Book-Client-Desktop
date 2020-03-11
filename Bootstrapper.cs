@@ -28,7 +28,8 @@ namespace Cook_Book_Client_Desktop
 
         protected override void Configure()
         {
-            _container.Instance(_container);
+            _container.Instance(_container)
+                .PerRequest<IRecipesEndPointAPI,RecipesEndPointAPI>();
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
