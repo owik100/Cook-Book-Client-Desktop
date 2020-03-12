@@ -8,26 +8,31 @@ using System.Threading.Tasks;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
-    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
+    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>, IHandle<AddNewRecipeEvent>
     {
-       private IEventAggregator _event;
+        private IEventAggregator _event;
         private RecipesViewModel _recipesViewModel;
-        private SimpleContainer _container;
-        public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel recipesViewModel,
-            SimpleContainer container)
+        private AddRecipeViewModel _addRecipeViewModel;
+        public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel recipesViewModel, AddRecipeViewModel addRecipeViewModel)
         {
             _event = eventAggregator;
             _event.Subscribe(this);
+
             _recipesViewModel = recipesViewModel;
-            _container = container; 
+            _addRecipeViewModel = addRecipeViewModel;
 
             //Zawsze żądaj nowej instancji loginViewModelu
-            ActivateItem(_container.GetInstance<LoginViewModel>());
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
 
         public void Handle(LogOnEvent message)
         {
-            ActivateItem(_recipesViewModel);   
+            ActivateItem(_recipesViewModel);      
+        }
+        public void Handle(AddNewRecipeEvent message)
+        {
+            //Uruchom okno z nowa instancja
+            ActivateItem(IoC.Get<AddRecipeViewModel>());
         }
     }
 }
