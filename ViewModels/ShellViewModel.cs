@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
+using Cook_Book_Client_Desktop_Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private IEventAggregator _event;
         private RecipesViewModel _recipesViewModel;
         private AddRecipeViewModel _addRecipeViewModel;
-        public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel recipesViewModel, AddRecipeViewModel addRecipeViewModel)
+        private ILoggedUser _loggedUser;
+        public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel recipesViewModel, AddRecipeViewModel addRecipeViewModel,
+            ILoggedUser loggedUser)
         {
             _event = eventAggregator;
             _event.Subscribe(this);
 
             _recipesViewModel = recipesViewModel;
             _addRecipeViewModel = addRecipeViewModel;
+            _loggedUser = loggedUser;
 
             //Zawsze żądaj nowej instancji loginViewModelu
             ActivateItem(IoC.Get<LoginViewModel>());
@@ -27,12 +31,39 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public void Handle(LogOnEvent message)
         {
-            ActivateItem(_recipesViewModel);      
+            ActivateItem(_recipesViewModel);
+            NotifyOfPropertyChange(() => IsLogged);
         }
         public void Handle(AddNewRecipeEvent message)
         {
             //Uruchom okno z nowa instancja
             ActivateItem(IoC.Get<AddRecipeViewModel>());
+        }
+
+        public bool IsLogged
+        {
+            get {
+                bool output = false;
+
+                if (string.IsNullOrWhiteSpace(_loggedUser.Token) == false)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
+        public void ExitApplication()
+        {
+            TryClose();
+        }
+
+        public void LogOut()
+        {
+            _loggedUser.LogOffUser();
+            NotifyOfPropertyChange(() => IsLogged);
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
     }
 }

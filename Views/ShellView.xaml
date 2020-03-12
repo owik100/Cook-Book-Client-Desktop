@@ -6,20 +6,32 @@
         xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
         mc:Ignorable="d"
         Title="Cook Book" MinHeight="450" MinWidth="800"  Height="450"   Width="800">
-    <Grid>
 
-        <Grid.RowDefinitions>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" FontSize="18">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="ExitApplication" Header="E_xit"/>
+            </MenuItem>
+            <MenuItem Header="_Account" Visibility="{Binding IsLogged, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Collapsed}">
+                <MenuItem x:Name="LogOut" Header="_Log Out"/>
+            </MenuItem>
+        </Menu>
 
-        </Grid.RowDefinitions>
+        <Grid>
 
-        
-        <StackPanel>
-            <local:LogoView Height="80"  />
-            <ContentControl x:Name="ActiveItem" Margin="5">
 
-            </ContentControl>
-        </StackPanel>
+            <StackPanel>
+                <local:LogoView Height="80"  />
+                <ContentControl x:Name="ActiveItem" Margin="5">
 
-       
-    </Grid>
+                </ContentControl>
+            </StackPanel>
+
+
+        </Grid>
+
+
+    </DockPanel>
+
+
 </Window>
