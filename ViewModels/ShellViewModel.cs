@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
+using Cook_Book_Client_Desktop_Library.API;
 using Cook_Book_Client_Desktop_Library.Models;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private RecipesViewModel _recipesViewModel;
         private AddRecipeViewModel _addRecipeViewModel;
         private ILoggedUser _loggedUser;
+        private IAPIHelper _apiHelper;
         public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel recipesViewModel, AddRecipeViewModel addRecipeViewModel,
-            ILoggedUser loggedUser)
+            ILoggedUser loggedUser, IAPIHelper aPIHelper)
         {
             _event = eventAggregator;
             _event.Subscribe(this);
@@ -24,6 +26,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _recipesViewModel = recipesViewModel;
             _addRecipeViewModel = addRecipeViewModel;
             _loggedUser = loggedUser;
+            _apiHelper = aPIHelper;
 
             //Zawsze żądaj nowej instancji loginViewModelu
             ActivateItem(IoC.Get<LoginViewModel>());
@@ -62,6 +65,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public void LogOut()
         {
             _loggedUser.LogOffUser();
+            _apiHelper.LogOffUser();
             NotifyOfPropertyChange(() => IsLogged);
             ActivateItem(IoC.Get<LoginViewModel>());
         }
