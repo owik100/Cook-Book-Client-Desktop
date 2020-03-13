@@ -16,12 +16,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
     {
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private BindingList<RecipeModel> _recipes;
-        private IEventAggregator _event;
+        private IEventAggregator _eventAggregator;
 
-        public RecipesViewModel(IRecipesEndPointAPI recipesEndPointAPI, IEventAggregator eventAggregator)
+        public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
         {
-            _recipesEndPointAPI = recipesEndPointAPI;
-            _event = eventAggregator;
+            _recipesEndPointAPI = RecipesEndPointAPI;
+            _eventAggregator = EventAggregator;
         }
 
         protected async override void OnViewLoaded(object view)
@@ -48,7 +48,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task AddRecipe()
         {
-           await _event.PublishOnUIThreadAsync(new AddNewRecipeEvent(), new CancellationToken());
+           await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(), new CancellationToken());
         }
     }
 }

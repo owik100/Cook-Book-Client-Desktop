@@ -28,7 +28,7 @@
         <TextBlock Grid.Column="0" Grid.Row="1"  Margin=" 0 0 10 0">
              Składniki:
         </TextBlock>
-        <TextBox x:Name="RecipeIntegradts" Grid.Column="1" Grid.Row="1"   MinWidth="350" Margin="0 0 0 10"/>
+        <TextBox x:Name="RecipeIngredients" Grid.Column="1" Grid.Row="1"   MinWidth="350" Margin="0 0 0 10"/>
 
         <TextBlock Grid.Column="0" Grid.Row="2"  Margin=" 0 0 10 0">
              Przepis:

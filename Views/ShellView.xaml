@@ -18,19 +18,13 @@
         </Menu>
 
         <Grid>
-
-
             <StackPanel>
                 <local:LogoView Height="80"  />
-                <ContentControl x:Name="ActiveItem" Margin="5">
 
-                </ContentControl>
+                <ContentControl x:Name="ActiveItem" Margin="5"></ContentControl>
+
             </StackPanel>
-
-
         </Grid>
-
-
     </DockPanel>
 
 

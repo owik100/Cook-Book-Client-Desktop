@@ -7,5 +7,5 @@
              mc:Ignorable="d" Background="AliceBlue"
              d:DesignHeight="450" d:DesignWidth="800">
     <Image Source="/Cook-Book-Client-Desktop;component/Resources/cook book text logo.png"
-               Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                HorizontalAlignment="Center"/>
 </UserControl>

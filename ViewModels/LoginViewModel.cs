@@ -14,13 +14,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
     {
 		private string _userName= "normal@gmail.com";
 		private string _password= "Pwd12345.";
-		private IAPIHelper _apiHelper;
-		private IEventAggregator _event;
+		private string _loginInfoMessage;
 
-		public LoginViewModel(IAPIHelper apiHelper, IEventAggregator eventAggregator)
+		private IAPIHelper _apiHelper;
+		private IEventAggregator _eventAggregator;
+
+		public LoginViewModel(IAPIHelper ApiHelper, IEventAggregator EventAggregator)
 		{
-			_apiHelper = apiHelper;
-			_event = eventAggregator;
+			_apiHelper = ApiHelper;
+			_eventAggregator = EventAggregator;
 		}
 
 		public string UserName
@@ -43,12 +45,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
 			}
 		}
 
-		public bool IsErrorVisible
+		public bool IsLoginInfoMessageVisible
 		{
 			get {
 				bool output = false;
 
-				if(ErrorMessage?.Length> 0)
+				if(LoginInfoMessage?.Length> 0)
 				{
 					output = true;
 				}
@@ -56,19 +58,17 @@ namespace Cook_Book_Client_Desktop.ViewModels
 				return output;
 			}
 		}
-
-		private string _errorMessage;
-		public string ErrorMessage
+		
+		public string LoginInfoMessage
 		{
-			get { return _errorMessage; }
+			get { return _loginInfoMessage; }
 			set
 			{
-				_errorMessage = value;
-				NotifyOfPropertyChange(() => IsErrorVisible);
-				NotifyOfPropertyChange(() => ErrorMessage);	
+				_loginInfoMessage = value;
+				NotifyOfPropertyChange(() => IsLoginInfoMessageVisible);
+				NotifyOfPropertyChange(() => LoginInfoMessage);	
 			}
 		}
-
 
 		public bool CanLogIn
 		{
@@ -90,18 +90,17 @@ namespace Cook_Book_Client_Desktop.ViewModels
 		{
 			try
 			{
-				ErrorMessage = "Connecting...";
+				LoginInfoMessage = "Connecting...";
 				var result = await _apiHelper.Authenticate(UserName, Password);
-				ErrorMessage = "";
+				LoginInfoMessage = "";
 
 				await _apiHelper.GetLoggedUserData(result.Access_Token);
 
-				await _event.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+				await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
 			}
 			catch (Exception ex)
 			{
-
-				ErrorMessage = ex.Message;
+				LoginInfoMessage = ex.Message;
 			}
 		}
 

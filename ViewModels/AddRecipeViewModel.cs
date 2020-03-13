@@ -18,12 +18,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _recipeIntegradts;
         private string _recipeInstructions;
 
-        private IRecipesEndPointAPI _iRecipesEndPointAPI;
+        private IRecipesEndPointAPI _recipesEndPointAPI;
         private IEventAggregator _eventAggregator;
 
-        public AddRecipeViewModel(IRecipesEndPointAPI IRecipesEndPointAPI, IEventAggregator EventAggregator)
+        public AddRecipeViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
         {
-            _iRecipesEndPointAPI = IRecipesEndPointAPI;
+            _recipesEndPointAPI = RecipesEndPointAPI;
             _eventAggregator = EventAggregator;
         }
 
@@ -36,12 +36,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        public string RecipeIntegradts
+        public string RecipeIngredients
         {
             get { return _recipeIntegradts; }
             set { 
                 _recipeIntegradts = value;
-                NotifyOfPropertyChange(() => RecipeIntegradts);
+                NotifyOfPropertyChange(() => RecipeIngredients);
             }
         }
 
@@ -62,17 +62,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 RecipeModel recipeModel = new RecipeModel
                 {
                     Name = RecipeName,
-                    Ingredients = RecipeIntegradts.Split(',').ToList(),
+                    Ingredients = RecipeIngredients.Split(',').ToList(),
                     Instruction = RecipeInstructions,
 
                 };
 
-                await _iRecipesEndPointAPI.InsertRecipe(recipeModel);
+                await _recipesEndPointAPI.InsertRecipe(recipeModel);
                 await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.ToString());
             }
 
