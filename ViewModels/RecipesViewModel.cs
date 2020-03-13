@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Cook_Book_Client_Desktop.ViewModels
@@ -45,9 +46,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
             Recipes = new BindingList<RecipeModel>(recipes);
         }
 
-        public void AddRecipe()
+        public async Task AddRecipe()
         {
-            _event.BeginPublishOnUIThread(new AddNewRecipeEvent());
+           await _event.PublishOnUIThreadAsync(new AddNewRecipeEvent(), new CancellationToken());
         }
     }
 }

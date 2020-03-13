@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Cook_Book_Client_Desktop.ViewModels
@@ -95,7 +96,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
 				await _apiHelper.GetLoggedUserData(result.Access_Token);
 
-				_event.BeginPublishOnUIThread(new LogOnEvent());
+				await _event.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
 			}
 			catch (Exception ex)
 			{

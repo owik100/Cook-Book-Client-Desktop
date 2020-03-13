@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
@@ -67,7 +68,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 };
 
                 await _iRecipesEndPointAPI.InsertRecipe(recipeModel);
-                _eventAggregator.PublishOnUIThread(new LogOnEvent());
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
             }
             catch (Exception ex)
             {
@@ -77,9 +78,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         }
 
-        public void Back()
+        public async Task Back()
         {
-            _eventAggregator.PublishOnUIThread(new LogOnEvent());
+            await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
         }
     }
 }

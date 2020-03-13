@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Cook_Book_Client_Desktop.ViewModels
@@ -14,34 +15,24 @@ namespace Cook_Book_Client_Desktop.ViewModels
     {
         private IEventAggregator _event;
         private RecipesViewModel _recipesViewModel;
-        private AddRecipeViewModel _addRecipeViewModel;
         private ILoggedUser _loggedUser;
         private IAPIHelper _apiHelper;
-        public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel recipesViewModel, AddRecipeViewModel addRecipeViewModel,
+        public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel recipesViewModel,
             ILoggedUser loggedUser, IAPIHelper aPIHelper)
         {
             _event = eventAggregator;
-            _event.Subscribe(this);
+            _event.SubscribeOnPublishedThread(this);
 
             _recipesViewModel = recipesViewModel;
-            _addRecipeViewModel = addRecipeViewModel;
             _loggedUser = loggedUser;
             _apiHelper = aPIHelper;
 
             //Zawsze żądaj nowej instancji loginViewModelu
-            ActivateItem(IoC.Get<LoginViewModel>());
+            ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
         }
 
-        public void Handle(LogOnEvent message)
-        {
-            ActivateItem(_recipesViewModel);
-            NotifyOfPropertyChange(() => IsLogged);
-        }
-        public void Handle(AddNewRecipeEvent message)
-        {
-            //Uruchom okno z nowa instancja
-            ActivateItem(IoC.Get<AddRecipeViewModel>());
-        }
+    
+      
 
         public bool IsLogged
         {
@@ -59,15 +50,40 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public void ExitApplication()
         {
-            TryClose();
+            TryCloseAsync();
         }
 
-        public void LogOut()
+        public async Task LogOut()
         {
             _loggedUser.LogOffUser();
             _apiHelper.LogOffUser();
             NotifyOfPropertyChange(() => IsLogged);
-            ActivateItem(IoC.Get<LoginViewModel>());
+           await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+        }
+
+        //public void Handle(AddNewRecipeEvent message)
+        //{
+        //    //Uruchom okno z nowa instancja
+        //    ActivateItem(IoC.Get<AddRecipeViewModel>());
+        //}
+
+        public async Task HandleAsync(AddNewRecipeEvent message, CancellationToken cancellationToken)
+        {
+            //Uruchom okno z nowa instancja
+            await ActivateItemAsync(IoC.Get<AddRecipeViewModel>(), cancellationToken);
+        }
+
+        //public void Handle(LogOnEvent message)
+        //{
+        //    ActivateItem(_recipesViewModel);
+        //    NotifyOfPropertyChange(() => IsLogged);
+        //}
+
+        public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
+        {
+            //Uruchom okno z nowa instancja
+           await  ActivateItemAsync(_recipesViewModel, cancellationToken);
+            NotifyOfPropertyChange(() => IsLogged);
         }
     }
 }
