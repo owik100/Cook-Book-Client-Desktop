@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Client_Desktop_Library.API;
+using Cook_Book_Client_Desktop_Library.API.Interfaces;
+using Cook_Book_Client_Desktop_Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class LoginViewModel : Screen
     {
-		private string _userName= "normal@gmail.com";
+		private string _userName= "Jan";
 		private string _password= "Pwd12345.";
 		private string _loginInfoMessage;
 
@@ -91,10 +93,10 @@ namespace Cook_Book_Client_Desktop.ViewModels
 			try
 			{
 				LoginInfoMessage = "Connecting...";
-				var result = await _apiHelper.Authenticate(UserName, Password);
+				AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
 				LoginInfoMessage = "";
 
-				await _apiHelper.GetLoggedUserData(result.Access_Token);
+				await _apiHelper.GetLoggedUserData(user.Access_Token);
 
 				await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
 			}

@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Client_Desktop_Library.API;
+using Cook_Book_Client_Desktop_Library.API.Interfaces;
 using Cook_Book_Client_Desktop_Library.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -42,13 +44,29 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         private async Task LoadRecipes()
         {
-            var recipes = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
-            Recipes = new BindingList<RecipeModel>(recipes);
+            try
+            {
+                var recipes = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
+                Recipes = new BindingList<RecipeModel>(recipes);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+           
         }
 
         public async Task AddRecipe()
         {
-           await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(), new CancellationToken());
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+
         }
     }
 }

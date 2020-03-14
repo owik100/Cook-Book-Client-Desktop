@@ -8,6 +8,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Client_Desktop_Library.API;
+using Cook_Book_Client_Desktop_Library.API.Interfaces;
 using Cook_Book_Client_Desktop_Library.Models;
 
 namespace Cook_Book_Client_Desktop.ViewModels
@@ -59,12 +60,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
             try
             {
                 //TODO Zrobic fabryke na to
+                // Walidacja
                 RecipeModel recipeModel = new RecipeModel
                 {
                     Name = RecipeName,
                     Ingredients = RecipeIngredients.Split(',').ToList(),
                     Instruction = RecipeInstructions,
-
                 };
 
                 await _recipesEndPointAPI.InsertRecipe(recipeModel);
@@ -72,7 +73,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
         }
