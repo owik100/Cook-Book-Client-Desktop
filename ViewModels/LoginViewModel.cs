@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -24,7 +25,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 		public LoginViewModel(IAPIHelper ApiHelper, IEventAggregator EventAggregator)
 		{
 			_apiHelper = ApiHelper;
-			_eventAggregator = EventAggregator;
+			_eventAggregator = EventAggregator;			
 		}
 
 		public string UserName
@@ -92,7 +93,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 		{
 			try
 			{
-				LoginInfoMessage = "Connecting...";
+
+				LoginInfoMessage = "Łączenie..";
 				AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
 				LoginInfoMessage = "";
 
@@ -102,9 +104,20 @@ namespace Cook_Book_Client_Desktop.ViewModels
 			}
 			catch (Exception ex)
 			{
-				LoginInfoMessage = ex.Message;
+				LoginInfoMessage = ex.Message;			
 			}
 		}
 
+		public async Task RegisterForm()
+		{
+			try
+			{
+				await _eventAggregator.PublishOnUIThreadAsync(new RegisterWindowEvent(), new CancellationToken());
+			}
+			catch (Exception ex)
+			{
+				LoginInfoMessage = ex.Message;
+			}
+		}
 	}
 }

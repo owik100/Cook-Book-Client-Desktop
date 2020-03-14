@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
         mc:Ignorable="d"
-        Title="Cook Book" MinHeight="550" MinWidth="950"  Height="550"   Width="950">
+        Title="Cook Book" MinHeight="750" MinWidth="950"  Height="750"   Width="950">
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" FontSize="18">

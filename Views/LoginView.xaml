@@ -19,6 +19,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
@@ -33,20 +34,33 @@
         </TextBlock>
 
         <TextBlock Grid.Row="2" Grid.Column="1" Margin=" 0 0 10 0">
-             Username:
+             Login:
         </TextBlock>
         <TextBox x:Name="UserName" Grid.Row="2"  Grid.Column="2" MinWidth="350"
                  MaxWidth="350" Margin="0 0 0 10"/>
 
         <TextBlock Grid.Row="3" Grid.Column="1" Margin=" 0 0 10 0"  >
-             Password:
+             Hasło:
         </TextBlock>
         <PasswordBox x:Name="Password" Grid.Row="3"  Grid.Column="2" MinWidth="350" 
                      MaxWidth="350" Margin="0 0 0 10"/>
 
         <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Padding="20 5" 
                 HorizontalAlignment="Center" x:Name="LogIn">
-            Login
+            Zaloguj
+        </Button>
+
+        <!--<TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin=" 0 40 0 0"  >
+             Nie masz jeszcze konta? Zarejestruj się!
+        </TextBlock>-->
+
+        <Button Content="Nie masz jeszcze konta? Zarejestruj się!" x:Name="RegisterForm"
+                Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin=" 0 40 0 0">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Button.Template>
         </Button>
     </Grid>
 </UserControl>

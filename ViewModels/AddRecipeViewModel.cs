@@ -80,7 +80,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task Back()
         {
-            await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+            await _eventAggregator.PublishOnUIThreadAsync(new LoginWindowEvent(), new CancellationToken());
         }
     }
 }

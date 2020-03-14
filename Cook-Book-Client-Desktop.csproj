@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
-    <RootNamespace>CookBookClientDesktop</RootNamespace>
+    <RootNamespace>Cook_Book_Client_Desktop</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\cook book text logo.png" />

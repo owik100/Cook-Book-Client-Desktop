@@ -13,7 +13,8 @@ using System.Threading.Tasks;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
-    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>, IHandle<AddRecipeWindowEvent>
+    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>, IHandle<AddRecipeWindowEvent>, 
+        IHandle<RegisterWindowEvent>, IHandle<LoginWindowEvent>
     {
         private IEventAggregator _eventAggregator;
         private RecipesViewModel _recipesViewModel;
@@ -64,9 +65,20 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
-            //Uruchom okno z nowa instancja
             await ActivateItemAsync(_recipesViewModel, cancellationToken);
             NotifyOfPropertyChange(() => IsLogged);
+        }
+
+        public async Task HandleAsync(RegisterWindowEvent message, CancellationToken cancellationToken)
+        {
+            //Uruchom okno z nowa instancja
+            await ActivateItemAsync(IoC.Get<RegisterViewModel>(), cancellationToken);
+        }
+
+        public async Task HandleAsync(LoginWindowEvent message, CancellationToken cancellationToken)
+        {
+            //Uruchom okno z nowa instancja
+            await  ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
         }
 
         public void ExitApplication()
