@@ -20,6 +20,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
@@ -50,12 +51,12 @@
             Zaloguj
         </Button>
 
-        <!--<TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin=" 0 40 0 0"  >
-             Nie masz jeszcze konta? Zarejestruj się!
-        </TextBlock>-->
+        <CheckBox x:Name="RemeberMe" Grid.Row="5" Grid.Column="1"  FlowDirection="RightToLeft">
+            <TextBlock FlowDirection="LeftToRight" Text="Pamiętaj" />
+        </CheckBox>
 
         <Button Content="Nie masz jeszcze konta? Zarejestruj się!" x:Name="RegisterForm"
-                Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin=" 0 40 0 0">
+                Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Margin=" 0 40 0 0">
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <ContentPresenter />

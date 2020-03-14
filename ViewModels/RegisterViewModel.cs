@@ -105,9 +105,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 bool output = false;
 
-                if (UserName?.Length > 0 && Email?.Length>0 && Password?.Length > 0 && PasswordRepeat?.Length > 0)
+                if (UserName?.Length > 0 && Email?.Length > 0 && Password?.Length > 0 && PasswordRepeat?.Length > 0)
                 {
-                    if( Password.Equals(PasswordRepeat))
+                    if (Password.Equals(PasswordRepeat))
                     {
                         RegisterInfoMessage = "";
                         output = true;
@@ -116,7 +116,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     {
                         RegisterInfoMessage = "Hasła nie są takie same";
                     }
-                    
+
                 }
 
                 return output;
@@ -143,7 +143,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     Password = Password,
                     ConfirmPassword = PasswordRepeat
                 };
-                    
+
                 var result = await _apiHelper.Register(user);
                 RegisterInfoMessage = "Rejestracja pomyślna. Możesz się teraz zalogować";
 
