@@ -36,12 +36,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
         }
 
 
-        public string ImageF
+        public string ImagePath
         {
             get { return _image; }
             set { 
                 _image = value;
-                NotifyOfPropertyChange(() => ImageF);
+                NotifyOfPropertyChange(() => ImagePath);
             }
         }
 
@@ -83,40 +83,24 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        public  void OpenFile()
+        public void OpenFile()
         {
-            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".jpeg";
+            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
 
-            // Launch OpenFileDialog by calling ShowDialog method
-            Nullable<bool> result = openFileDlg.ShowDialog();
-            // Get the selected file name and display in a TextBox.
-            // Load content of file in a TextBlock
+            Nullable<bool> result = dlg.ShowDialog();
+
             if (result == true)
             {
-                FileName = openFileDlg.FileName;
-
-               string strfilename = openFileDlg.InitialDirectory + openFileDlg.FileName;
-
-                using (Image image = Image.FromFile(strfilename))
-                {
-                    using (MemoryStream m = new MemoryStream())
-                    {
-                        image.Save(m, image.RawFormat);
-                        byte[] imageBytes = m.ToArray();
-
-                        // Convert byte[] to Base64 String
-                        string base64String = Convert.ToBase64String(imageBytes);
-                        ImageF = base64String;
-                    }
-                }
-
-                
-
+                FileName = dlg.FileName;
+                ImagePath = dlg.FileName;
             }
         }
 
         public async Task AddRecipeSubmit()
         {
+           
             try
             {
                 //TODO Zrobic fabryke na to
@@ -126,30 +110,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     Name = RecipeName,
                     Ingredients = RecipeIngredients.Split(',').ToList(),
                     Instruction = RecipeInstructions,
-                    Image = ImageF
+                    ImagePath = ImagePath
                 };
-
-
-
-                //var imageDataByteArray = Convert.FromBase64String(recipeModel.Image);
-                //var imageDataStream = new MemoryStream(imageDataByteArray);
-                //imageDataStream.Position = 0;
-
-                //using (FileStream file = new FileStream(@"D:\Projects\AllInOne\Cook-Book\Cook-Book-API\wwwroot\images\kot.jpeg", FileMode.Create, System.IO.FileAccess.Write))
-                //{
-                //    byte[] bytes = new byte[imageDataStream.Length];
-                //    imageDataStream.Read(bytes, 0, (int)imageDataStream.Length);
-                //    file.Write(bytes, 0, bytes.Length);
-                //    imageDataStream.Close();
-                //}
-
-                //using (FileStream file = new FileStream(@"D:\Projects\AllInOne\Cook-Book\Cook-Book-API\wwwroot\images\kot.jpeg", FileMode.Create, System.IO.FileAccess.Write))
-                //    imageDataStream.CopyTo(file);
-
-
-                //System.IO.File.WriteAllBytes(@"D:\Projects\AllInOne\Cook-Book\Cook-Book-API\wwwroot\images\kot.jpeg", imageDataByteArray);
-
-
 
                 await _recipesEndPointAPI.InsertRecipe(recipeModel);
                 await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
