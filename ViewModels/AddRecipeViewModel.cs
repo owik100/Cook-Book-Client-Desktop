@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -35,12 +36,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
         }
 
 
-        public string Image
+        public string ImageF
         {
             get { return _image; }
             set { 
                 _image = value;
-                NotifyOfPropertyChange(() => Image);
+                NotifyOfPropertyChange(() => ImageF);
             }
         }
 
@@ -82,7 +83,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        public async Task OpenFile()
+        public  void OpenFile()
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
 
@@ -96,23 +97,20 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                string strfilename = openFileDlg.InitialDirectory + openFileDlg.FileName;
 
+                using (Image image = Image.FromFile(strfilename))
+                {
+                    using (MemoryStream m = new MemoryStream())
+                    {
+                        image.Save(m, image.RawFormat);
+                        byte[] imageBytes = m.ToArray();
 
+                        // Convert byte[] to Base64 String
+                        string base64String = Convert.ToBase64String(imageBytes);
+                        ImageF = base64String;
+                    }
+                }
 
-                HttpClient client = new HttpClient();
-                // we need to send a request with multipart/form-data
-                var multiForm = new MultipartFormDataContent();
-
-               
-                    // add file and directly upload it
-                    FileStream fs = File.OpenRead(strfilename);
-                    var streamContent = new StreamContent(fs);
-
-                    //string dd = MimeType(path);
-                    var fileContent = new ByteArrayContent(await streamContent.ReadAsByteArrayAsync());
-                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-                    multiForm.Add(fileContent, "files", Path.GetFileName(strfilename));
                 
-
 
             }
         }
@@ -128,8 +126,30 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     Name = RecipeName,
                     Ingredients = RecipeIngredients.Split(',').ToList(),
                     Instruction = RecipeInstructions,
-                    Image = Image
+                    Image = ImageF
                 };
+
+
+
+                //var imageDataByteArray = Convert.FromBase64String(recipeModel.Image);
+                //var imageDataStream = new MemoryStream(imageDataByteArray);
+                //imageDataStream.Position = 0;
+
+                //using (FileStream file = new FileStream(@"D:\Projects\AllInOne\Cook-Book\Cook-Book-API\wwwroot\images\kot.jpeg", FileMode.Create, System.IO.FileAccess.Write))
+                //{
+                //    byte[] bytes = new byte[imageDataStream.Length];
+                //    imageDataStream.Read(bytes, 0, (int)imageDataStream.Length);
+                //    file.Write(bytes, 0, bytes.Length);
+                //    imageDataStream.Close();
+                //}
+
+                //using (FileStream file = new FileStream(@"D:\Projects\AllInOne\Cook-Book\Cook-Book-API\wwwroot\images\kot.jpeg", FileMode.Create, System.IO.FileAccess.Write))
+                //    imageDataStream.CopyTo(file);
+
+
+                //System.IO.File.WriteAllBytes(@"D:\Projects\AllInOne\Cook-Book\Cook-Book-API\wwwroot\images\kot.jpeg", imageDataByteArray);
+
+
 
                 await _recipesEndPointAPI.InsertRecipe(recipeModel);
                 await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
