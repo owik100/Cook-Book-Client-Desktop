@@ -17,6 +17,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -35,12 +36,18 @@
         </TextBlock>
         <TextBox x:Name="RecipeInstructions" Grid.Column="1" Grid.Row="2"   MinWidth="350" Margin="0 0 0 10"/>
 
+        <Button Grid.Row="3" x:Name="OpenFile">
+            Open file
+        </Button>
+        <TextBlock Grid.Column="1" Grid.Row="3"  Margin=" 0 0 10 0"  x:Name="FileName">
+             
+        </TextBlock>
 
-        <Button x:Name="AddRecipeSubmit" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="1" Margin="10" Padding="10">
+        <Button x:Name="AddRecipeSubmit" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="1" Margin="10" Padding="10">
             Dodaj przepis!
         </Button>
 
-        <Button x:Name="Back" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="10" Padding="10">
+        <Button x:Name="Back" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Margin="10" Padding="10">
             Wróć
         </Button>
     </Grid>

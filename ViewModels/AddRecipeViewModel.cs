@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +22,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _recipeIntegradts;
         private string _recipeInstructions;
 
+        private string _fileName;
+        private string _image;
+
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IEventAggregator _eventAggregator;
 
@@ -27,6 +33,27 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _recipesEndPointAPI = RecipesEndPointAPI;
             _eventAggregator = EventAggregator;
         }
+
+
+        public string Image
+        {
+            get { return _image; }
+            set { 
+                _image = value;
+                NotifyOfPropertyChange(() => Image);
+            }
+        }
+
+
+        public string FileName
+        {
+            get { return _fileName; }
+            set { 
+                _fileName = value;
+                NotifyOfPropertyChange(() => FileName);
+            }
+        }
+
 
         public string RecipeName
         {
@@ -55,6 +82,41 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
+        public async Task OpenFile()
+        {
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Launch OpenFileDialog by calling ShowDialog method
+            Nullable<bool> result = openFileDlg.ShowDialog();
+            // Get the selected file name and display in a TextBox.
+            // Load content of file in a TextBlock
+            if (result == true)
+            {
+                FileName = openFileDlg.FileName;
+
+               string strfilename = openFileDlg.InitialDirectory + openFileDlg.FileName;
+
+
+
+                HttpClient client = new HttpClient();
+                // we need to send a request with multipart/form-data
+                var multiForm = new MultipartFormDataContent();
+
+               
+                    // add file and directly upload it
+                    FileStream fs = File.OpenRead(strfilename);
+                    var streamContent = new StreamContent(fs);
+
+                    //string dd = MimeType(path);
+                    var fileContent = new ByteArrayContent(await streamContent.ReadAsByteArrayAsync());
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                    multiForm.Add(fileContent, "files", Path.GetFileName(strfilename));
+                
+
+
+            }
+        }
+
         public async Task AddRecipeSubmit()
         {
             try
@@ -66,6 +128,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     Name = RecipeName,
                     Ingredients = RecipeIngredients.Split(',').ToList(),
                     Instruction = RecipeInstructions,
+                    Image = Image
                 };
 
                 await _recipesEndPointAPI.InsertRecipe(recipeModel);
@@ -80,7 +143,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task Back()
         {
-            await _eventAggregator.PublishOnUIThreadAsync(new LoginWindowEvent(), new CancellationToken());
+            await _eventAggregator.PublishOnUIThreadAsync(new  LogOnEvent(), new CancellationToken());
         }
     }
 }
