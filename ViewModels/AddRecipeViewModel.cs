@@ -17,7 +17,7 @@ using Cook_Book_Client_Desktop_Library.Models;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
-    public class AddRecipeViewModel : Screen
+    public class AddRecipeViewModel : Screen, IHandle<SendRecipe>
     {
         private string _recipeName;
         private string _recipeIntegradts;
@@ -29,17 +29,51 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IEventAggregator _eventAggregator;
 
+        private AddOrEdit _addOrEdit = AddOrEdit.Add;
+        private string _submitText;
+        private int _recipeId;
+
         public AddRecipeViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
             _eventAggregator = EventAggregator;
+            _eventAggregator.SubscribeOnPublishedThread(this);
         }
 
+        public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
+        {
+            if (message != null)
+            {
+                _addOrEdit = AddOrEdit.Edit;
+                _recipeId = message.RecipeModel.RecipeId;
+                SubmitText = "Zaktualizuj";
+
+                RecipeName = message.RecipeModel.Name;
+                RecipeIngredients = string.Join(",", message.RecipeModel.Ingredients);
+                RecipeInstructions = message.RecipeModel.Instruction;
+            }
+            else
+            {
+                SubmitText = "Dodaj";
+            }
+            await Task.CompletedTask;
+        }
+
+        public string SubmitText
+        {
+            get { return _submitText; }
+            set
+            {
+                _submitText = value;
+                NotifyOfPropertyChange(() => SubmitText);
+            }
+        }
 
         public string ImagePath
         {
             get { return _image; }
-            set { 
+            set
+            {
                 _image = value;
                 NotifyOfPropertyChange(() => ImagePath);
             }
@@ -49,7 +83,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public string FileName
         {
             get { return _fileName; }
-            set { 
+            set
+            {
                 _fileName = value;
                 NotifyOfPropertyChange(() => FileName);
             }
@@ -59,7 +94,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public string RecipeName
         {
             get { return _recipeName; }
-            set { 
+            set
+            {
                 _recipeName = value;
                 NotifyOfPropertyChange(() => RecipeName);
             }
@@ -68,7 +104,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public string RecipeIngredients
         {
             get { return _recipeIntegradts; }
-            set { 
+            set
+            {
                 _recipeIntegradts = value;
                 NotifyOfPropertyChange(() => RecipeIngredients);
             }
@@ -77,7 +114,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public string RecipeInstructions
         {
             get { return _recipeInstructions; }
-            set { 
+            set
+            {
                 _recipeInstructions = value;
                 NotifyOfPropertyChange(() => RecipeInstructions);
             }
@@ -100,11 +138,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task AddRecipeSubmit()
         {
-           
             try
             {
                 //TODO Zrobic fabryke na to
                 // Walidacja
+                //Delegat?
                 RecipeModel recipeModel = new RecipeModel
                 {
                     Name = RecipeName,
@@ -113,8 +151,23 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     ImagePath = ImagePath
                 };
 
-                await _recipesEndPointAPI.InsertRecipe(recipeModel);
-                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                if (_addOrEdit == AddOrEdit.Add)
+                {
+                    
+
+                    await _recipesEndPointAPI.InsertRecipe(recipeModel);
+                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                }
+                else
+                {
+                    recipeModel.RecipeId = _recipeId;
+                    var result = await _recipesEndPointAPI.EditRecipe(recipeModel);
+
+                    if(result)
+                    {
+                        MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -125,7 +178,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task Back()
         {
-            await _eventAggregator.PublishOnUIThreadAsync(new  LogOnEvent(), new CancellationToken());
+            await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
         }
+
+
     }
 }

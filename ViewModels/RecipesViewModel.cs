@@ -59,7 +59,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(AddOrEdit.Add), new CancellationToken());
             }
             catch (Exception ex)
             {
@@ -82,9 +82,17 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         }
 
-        public void EditRecipe(RecipeModel model)
+        public async Task EditRecipe(RecipeModel model)
         {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(AddOrEdit.Edit, model), new CancellationToken());
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
         }
 
         public async Task DeleteRecipe(RecipeModel model)

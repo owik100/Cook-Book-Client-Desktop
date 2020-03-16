@@ -1,7 +1,23 @@
-﻿namespace Cook_Book_Client_Desktop.EventsModels
+﻿using Cook_Book_Client_Desktop_Library.Models;
+
+namespace Cook_Book_Client_Desktop.EventsModels
 {
    public class AddRecipeWindowEvent
     {
+        public AddRecipeWindowEvent(AddOrEdit addOrEdit , RecipeModel recipeModel = null)
+        {
+            RecipeModel = recipeModel;
+            AddOrEdit = addOrEdit;
+        }
 
+        public RecipeModel RecipeModel { get; private set; }
+        public AddOrEdit AddOrEdit { get; private set; }
+    }
+
+    public enum AddOrEdit
+    {
+        Add,
+        Edit
     }
 }
+

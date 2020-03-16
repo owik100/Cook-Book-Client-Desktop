@@ -20,6 +20,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private RecipesViewModel _recipesViewModel;
         private ILoggedUser _loggedUser;
         private IAPIHelper _apiHelper;
+
         public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel RecipesViewModel,
             ILoggedUser LoggedUser, IAPIHelper APIHelper)
         {
@@ -59,8 +60,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task HandleAsync(AddRecipeWindowEvent message, CancellationToken cancellationToken)
         {
-            //Uruchom okno z nowa instancja
-            await ActivateItemAsync(IoC.Get<AddRecipeViewModel>(), cancellationToken);
+            if(message.AddOrEdit == AddOrEdit.Add)
+            {
+                await ActivateItemAsync(IoC.Get<AddRecipeViewModel>(), cancellationToken);
+            }
+            else if (message.AddOrEdit == AddOrEdit.Edit)
+            {
+                await ActivateItemAsync(IoC.Get<AddRecipeViewModel>(), cancellationToken);
+                await _eventAggregator.PublishOnUIThreadAsync(new SendRecipe(message.RecipeModel), new CancellationToken());
+            }            
         }
 
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
