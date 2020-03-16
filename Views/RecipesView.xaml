@@ -26,6 +26,9 @@
                     <WrapPanel>
                         <TextBlock Text="{Binding Name}" FontSize="15" Margin="0 0 10 0"/>
                         <TextBlock Text="{Binding Instruction}" FontSize="12"/>
+                        <Button x:Name="EditRecipe" FontSize="15" Content="{Binding RecipeId}">
+                            
+                        </Button>
                     </WrapPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

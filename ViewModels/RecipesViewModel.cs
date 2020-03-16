@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -24,8 +25,10 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
             _eventAggregator = EventAggregator;
-        }
 
+        }
+        public ICommand EditRecipeCommand { get; set; }
+        
         protected async override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
@@ -53,10 +56,22 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
-           
+
         }
 
         public async Task AddRecipe()
+        {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+
+        }
+        public async Task EditRecipe()
         {
             try
             {
