@@ -31,12 +31,14 @@
                 <DataTemplate>
                     <WrapPanel>
                         <TextBlock Text="{Binding Name}" FontSize="15" Margin="0 0 10 0"/>
-                        <TextBlock Text="{Binding Instruction}" FontSize="12"/>
-                        <Button FontSize="15" cal:Message.Attach="EditRecipe($dataContext)">
+                        <Button FontSize="15" Margin="2 0 2 0" cal:Message.Attach="EditRecipe($dataContext)">
                             Edytuj
                         </Button>
-                        <Button FontSize="15" cal:Message.Attach="DeleteRecipe($dataContext)">
+                        <Button FontSize="15" Margin="2 0 2 0" cal:Message.Attach="DeleteRecipe($dataContext)">
                             Usuń
+                        </Button>
+                        <Button FontSize="15" Margin="2 0 2 0" cal:Message.Attach="RecipePreview($dataContext)">
+                            Szczegóły
                         </Button>
                     </WrapPanel>
                 </DataTemplate>

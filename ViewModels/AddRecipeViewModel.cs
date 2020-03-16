@@ -38,6 +38,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _recipesEndPointAPI = RecipesEndPointAPI;
             _eventAggregator = EventAggregator;
             _eventAggregator.SubscribeOnPublishedThread(this);
+
+            SubmitText = "Dodaj";
         }
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
@@ -49,13 +51,10 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 SubmitText = "Zaktualizuj";
 
                 RecipeName = message.RecipeModel.Name;
-                RecipeIngredients = string.Join(",", message.RecipeModel.Ingredients);
+                RecipeIngredients = string.Join(";", message.RecipeModel.Ingredients);
                 RecipeInstructions = message.RecipeModel.Instruction;
             }
-            else
-            {
-                SubmitText = "Dodaj";
-            }
+
             await Task.CompletedTask;
         }
 
@@ -146,7 +145,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 RecipeModel recipeModel = new RecipeModel
                 {
                     Name = RecipeName,
-                    Ingredients = RecipeIngredients.Split(',').ToList(),
+                    Ingredients = RecipeIngredients.Split(';').ToList(),
                     Instruction = RecipeInstructions,
                     ImagePath = ImagePath
                 };

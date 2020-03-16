@@ -8,7 +8,10 @@
   <ItemGroup>
     <None Remove="Resources\cook book text logo.png" />
     <None Remove="Resources\cookbook logo.png" />
+    <None Remove="Resources\food template - Copy.png" />
     <None Remove="Resources\food template.png" />
+    <None Remove="Resources\zapiekanka.jpg" />
+    <None Remove="Resources\zapiekanka.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.105-alpha" />
@@ -20,5 +23,6 @@
     <Resource Include="Resources\cook book text logo.png" />
     <Resource Include="Resources\cookbook logo.png" />
     <Resource Include="Resources\food template.png" />
+    <Resource Include="Resources\zapiekanka.png" />
   </ItemGroup>
 </Project>

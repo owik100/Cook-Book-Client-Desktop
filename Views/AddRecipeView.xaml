@@ -44,7 +44,7 @@
         </TextBlock>
 
         <Button x:Name="AddRecipeSubmit" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="1" Margin="10" Padding="10"
-          Content="{Binding SubmitText}"      >
+          Content="{Binding SubmitText}">
         </Button>
 
         <Button x:Name="Back" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Margin="10" Padding="10">

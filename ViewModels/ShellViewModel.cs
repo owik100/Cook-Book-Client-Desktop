@@ -88,15 +88,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
             //Uruchom okno z nowa instancja
             await  ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
         }
+        public async Task HandleAsync(RecipePreviewEvent message, CancellationToken cancellationToken)
+        {
+            await ActivateItemAsync(IoC.Get<RecipePreviewViewModel>(), new CancellationToken());
+            await _eventAggregator.PublishOnUIThreadAsync(new SendRecipe(message.RecipeModel), new CancellationToken());
+        }
 
         public void ExitApplication()
         {
             TryCloseAsync();
-        }
-
-        public async Task HandleAsync(RecipePreviewEvent message, CancellationToken cancellationToken)
-        {
-            await ActivateItemAsync(IoC.Get<RecipePreviewViewModel>(), new CancellationToken());
-        }
+        }    
     }
 }

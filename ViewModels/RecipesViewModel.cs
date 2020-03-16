@@ -69,11 +69,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
         }
 
 
-        public async Task RecipePreview()
+        public async Task RecipePreview(RecipeModel model)
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new RecipePreviewEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new RecipePreviewEvent(model), new CancellationToken());
             }
             catch (Exception ex)
             {
