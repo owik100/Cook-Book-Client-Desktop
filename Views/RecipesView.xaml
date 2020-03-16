@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
+
              mc:Ignorable="d"  Background="White" FontSize="24"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             
+              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             
+             >
     <Grid>
 
         <Grid.RowDefinitions>
@@ -26,8 +32,11 @@
                     <WrapPanel>
                         <TextBlock Text="{Binding Name}" FontSize="15" Margin="0 0 10 0"/>
                         <TextBlock Text="{Binding Instruction}" FontSize="12"/>
-                        <Button x:Name="EditRecipe" FontSize="15" Content="{Binding RecipeId}">
-                            
+                        <Button FontSize="15" cal:Message.Attach="EditRecipe($dataContext)">
+                            Edytuj
+                        </Button>
+                        <Button FontSize="15" cal:Message.Attach="DeleteRecipe($dataContext)">
+                            Usuń
                         </Button>
                     </WrapPanel>
                 </DataTemplate>

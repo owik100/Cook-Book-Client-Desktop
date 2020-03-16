@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>, IHandle<AddRecipeWindowEvent>, 
-        IHandle<RegisterWindowEvent>, IHandle<LoginWindowEvent>
+        IHandle<RegisterWindowEvent>, IHandle<LoginWindowEvent>, IHandle<RecipePreviewEvent>
     {
         private IEventAggregator _eventAggregator;
         private RecipesViewModel _recipesViewModel;
@@ -86,5 +86,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
             TryCloseAsync();
         }
 
+        public async Task HandleAsync(RecipePreviewEvent message, CancellationToken cancellationToken)
+        {
+            await ActivateItemAsync(IoC.Get<RecipePreviewViewModel>(), new CancellationToken());
+        }
     }
 }

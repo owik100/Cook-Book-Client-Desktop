@@ -6,12 +6,9 @@ using Cook_Book_Client_Desktop_Library.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -27,7 +24,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _eventAggregator = EventAggregator;
 
         }
-        public ICommand EditRecipeCommand { get; set; }
         
         protected async override void OnViewLoaded(object view)
         {
@@ -71,17 +67,42 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
 
         }
-        public async Task EditRecipe()
+
+
+        public async Task RecipePreview()
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new RecipePreviewEvent(), new CancellationToken());
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
+        }
+
+        public void EditRecipe(RecipeModel model)
+        {
+
+        }
+
+        public async Task DeleteRecipe(RecipeModel model)
+        {
+            try
+            {
+                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć {model.Name} ?", "Potwierdź usunięcie", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    var result = await _recipesEndPointAPI.DeleteRecipe(model.RecipeId.ToString());
+
+                    await LoadRecipes();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
         }
     }
 }
