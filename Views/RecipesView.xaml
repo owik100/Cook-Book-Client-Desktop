@@ -26,24 +26,32 @@
                    Margin="0 0 0 20">
             Twoje przepisy
         </TextBlock>
-        <ListBox x:Name="Recipes" Grid.Row="1">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel>
-                        <TextBlock Text="{Binding Name}" FontSize="15" Margin="0 0 10 0"/>
-                        <Button FontSize="15" Margin="2 0 2 0" cal:Message.Attach="EditRecipe($dataContext)">
-                            Edytuj
-                        </Button>
-                        <Button FontSize="15" Margin="2 0 2 0" cal:Message.Attach="DeleteRecipe($dataContext)">
-                            Usuń
-                        </Button>
-                        <Button FontSize="15" Margin="2 0 2 0" cal:Message.Attach="RecipePreview($dataContext)">
-                            Szczegóły
-                        </Button>
-                    </WrapPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <ScrollViewer Grid.Column="0" Grid.Row="1"  Margin=" 20 0 0 0" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="Recipes" Grid.Row="1">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel Margin="5">
+                            <Button MaxHeight="30" FontSize="15" Margin="2 0 2 0" cal:Message.Attach="RecipePreview($dataContext)">
+                                Szczegóły
+                            </Button>
+                            <Button MaxHeight="30" FontSize="15" Margin="2 0 2 0" cal:Message.Attach="EditRecipe($dataContext)">
+                                Edytuj
+                            </Button>
+                            <Button MaxHeight="30" FontSize="15" Margin="2 0 2 0" cal:Message.Attach="DeleteRecipe($dataContext)">
+                                Usuń
+                            </Button>
+                            <Image  MaxHeight="150" MaxWidth="150" Source="/Cook-Book-Client-Desktop;component/Resources/zapiekanka.png" 
+                   Stretch="Uniform" StretchDirection="DownOnly" >
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" FontSize="25" Margin="10 0 0 0"/>
+
+
+                        </WrapPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
         <DockPanel Grid.Row="2">
             <Button x:Name="AddRecipe" DockPanel.Dock="Bottom"  Margin="0 10 0 0" FontSize="36" Padding="0 10 0 10">
                 Dodaj nowy przepis!
