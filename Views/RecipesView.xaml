@@ -40,12 +40,10 @@
                             <Button MaxHeight="30" FontSize="15" Margin="2 0 2 0" cal:Message.Attach="DeleteRecipe($dataContext)">
                                 Usuń
                             </Button>
-                            <Image  MaxHeight="150" MaxWidth="150" Source="/Cook-Book-Client-Desktop;component/Resources/zapiekanka.png" 
+                            <Image  MaxHeight="150" MaxWidth="150" Source="{Binding ImagePath}"
                    Stretch="Uniform" StretchDirection="DownOnly" >
                             </Image>
                             <TextBlock VerticalAlignment="Center" Text="{Binding Name}" FontSize="25" Margin="10 0 0 0"/>
-
-
                         </WrapPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

@@ -29,6 +29,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             base.OnViewLoaded(view);
             await LoadRecipes();
+            await LoadImages();
         }
 
         public BindingList<RecipeModel> Recipes
@@ -47,12 +48,35 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 var recipes = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
                 Recipes = new BindingList<RecipeModel>(recipes);
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
+        }
+
+        private async Task LoadImages()
+        {
+            try
+            {
+                foreach (var item in Recipes)
+                {
+                    if(item.NameOfImage == null)
+                        continue;
+                   string path = await _recipesEndPointAPI.GetImagePath(item.NameOfImage);
+                    item.ImagePath = path;
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+            
         }
 
         public async Task AddRecipe()

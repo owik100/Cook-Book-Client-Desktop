@@ -206,7 +206,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     Name = RecipeName,
                     Ingredients = RecipeIngredients.ToList(),
                     Instruction = RecipeInstructions,
-                    ImagePath = ImagePath
+                    NameOfImage = ImagePath
                 };
 
                 if (_addOrEdit == AddOrEdit.Add)
