@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
+              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" Background="White" FontSize="24"
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -16,6 +18,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="3*" />
 
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -30,14 +33,33 @@
             
 
             <TextBlock Grid.Column="0" Grid.Row="0"  Margin=" 0 0 10 0">
-             Nazwa przepisu:
+             Nazwa:
             </TextBlock>
             <TextBox x:Name="RecipeName" Grid.Column="1" Grid.Row="0"   MinWidth="350" Margin="0 0 0 10"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="1"  Margin=" 0 0 10 0">
+            <TextBlock Grid.Column="2" Grid.Row="0"  Margin=" 0 0 10 0">
              Składniki:
             </TextBlock>
-            <TextBox x:Name="RecipeIngredients" Grid.Column="1" Grid.Row="1"   MinWidth="350" Margin="0 0 0 10"/>
+
+            <Button Grid.Column="2" Grid.Row="1"  Margin="5" cal:Message.Attach="AddIngredientTextBox">
+                Dodaj nowy
+            </Button>
+
+            <Button Grid.Column="2" Grid.Row="3"  Margin="5" cal:Message.Attach="DeleteIngredient($this)">
+                Usun
+            </Button>
+
+            <ScrollViewer Grid.Column="2" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="IngredientsStackPanel" >
+                    <ItemsControl ItemsSource="{Binding RecipeIngredients, Mode=TwoWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=. , Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
 
             <TextBlock Grid.Column="0" Grid.Row="2"  Margin=" 0 0 10 0">
              Przepis:

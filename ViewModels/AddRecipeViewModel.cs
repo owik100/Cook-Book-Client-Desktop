@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
     public class AddRecipeViewModel : Screen, IHandle<SendRecipe>
     {
         private string _recipeName;
-        private string _recipeIntegradts;
+        private ObservableCollection<string> _recipeIntegradts;
         private string _recipeInstructions;
 
         private string _fileName;
@@ -54,7 +56,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 TitleText = "Edytuj przepis";
 
                 RecipeName = message.RecipeModel.Name;
-                RecipeIngredients = string.Join(";", message.RecipeModel.Ingredients);
+                RecipeIngredients = new ObservableCollection<string>(message.RecipeModel.Ingredients.ToList());
                 RecipeInstructions = message.RecipeModel.Instruction;
             }
 
@@ -113,7 +115,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        public string RecipeIngredients
+        public ObservableCollection<string> RecipeIngredients
         {
             get { return _recipeIntegradts; }
             set
@@ -158,7 +160,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 RecipeModel recipeModel = new RecipeModel
                 {
                     Name = RecipeName,
-                    Ingredients = RecipeIngredients.Split(';').ToList(),
+                    Ingredients = RecipeIngredients.ToList(),
                     Instruction = RecipeInstructions,
                     ImagePath = ImagePath
                 };
@@ -186,6 +188,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
+        }
+
+        public void AddIngredientTextBox()
+        {
+            RecipeIngredients.Add("Dodane");
+        }
+
+        public void DeleteIngredient(object model)
+        {
+            RecipeIngredients.Add("Dodane");
         }
 
         public async Task Back()
