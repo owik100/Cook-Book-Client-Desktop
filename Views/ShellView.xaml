@@ -17,15 +17,11 @@
             </MenuItem>
         </Menu>
 
+        <local:LogoView DockPanel.Dock="Top" MaxHeight="80"/>
+
         <Grid>
-            <StackPanel>
-                <local:LogoView Height="80"  />
-
-                <ContentControl x:Name="ActiveItem" Margin="5"></ContentControl>
-
-            </StackPanel>
+            <ContentControl x:Name="ActiveItem"  Margin="5"></ContentControl>
         </Grid>
+
     </DockPanel>
-
-
 </Window>
