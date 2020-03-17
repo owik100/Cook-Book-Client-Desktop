@@ -22,7 +22,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
     public class AddRecipeViewModel : Screen, IHandle<SendRecipe>
     {
         private string _recipeName;
-        private ObservableCollection<string> _recipeIntegradts;
+        private BindingList<string> _recipeIntegradts = new BindingList<string>();
+        private string _selectedIngredient;
+        private string _ingredientInsert;
         private string _recipeInstructions;
 
         private string _fileName;
@@ -33,7 +35,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         private AddOrEdit _addOrEdit = AddOrEdit.Add;
         private string _submitText;
-        private string _titleText;
         private int _recipeId;
 
         public AddRecipeViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
@@ -43,7 +44,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _eventAggregator.SubscribeOnPublishedThread(this);
 
             SubmitText = "Dodaj";
-            TitleText = "Dodaj nowy przepis";
         }
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
@@ -53,10 +53,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _addOrEdit = AddOrEdit.Edit;
                 _recipeId = message.RecipeModel.RecipeId;
                 SubmitText = "Zaktualizuj";
-                TitleText = "Edytuj przepis";
 
                 RecipeName = message.RecipeModel.Name;
-                RecipeIngredients = new ObservableCollection<string>(message.RecipeModel.Ingredients.ToList());
+                RecipeIngredients = new BindingList<string>(message.RecipeModel.Ingredients.ToList());
                 RecipeInstructions = message.RecipeModel.Instruction;
             }
 
@@ -70,16 +69,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _submitText = value;
                 NotifyOfPropertyChange(() => SubmitText);
-            }
-        }
-
-        public string TitleText
-        {
-            get { return _titleText; }
-            set
-            {
-                _titleText = value;
-                NotifyOfPropertyChange(() => TitleText);
             }
         }
 
@@ -115,13 +104,25 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        public ObservableCollection<string> RecipeIngredients
+        public BindingList<string> RecipeIngredients
         {
             get { return _recipeIntegradts; }
             set
             {
                 _recipeIntegradts = value;
                 NotifyOfPropertyChange(() => RecipeIngredients);
+            }
+        }
+
+        public string SelectedIngredient
+        {
+            get { return _selectedIngredient; }
+            set
+            {
+                _selectedIngredient = value;
+                NotifyOfPropertyChange(() => SelectedIngredient);
+                NotifyOfPropertyChange(() => RecipeIngredients);
+                NotifyOfPropertyChange(() => CanDeleteIngredient);
             }
         }
 
@@ -133,6 +134,49 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _recipeInstructions = value;
                 NotifyOfPropertyChange(() => RecipeInstructions);
             }
+        }
+
+        public string IngredientInsert
+        {
+            get { return _ingredientInsert; }
+            set
+            {
+                _ingredientInsert = value;
+                NotifyOfPropertyChange(() => IngredientInsert);
+                NotifyOfPropertyChange(() => CanAddIngredientTextBox); 
+            }
+        }
+
+        public bool CanAddIngredientTextBox
+        {
+            get
+            {
+                bool output = false;
+
+                if (!string.IsNullOrWhiteSpace(IngredientInsert))
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+
+        }
+
+        public bool CanDeleteIngredient
+        {
+            get
+            {
+                bool output = false;
+
+                if (!string.IsNullOrWhiteSpace(SelectedIngredient))
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+
         }
 
         public void OpenFile()
@@ -167,7 +211,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                 if (_addOrEdit == AddOrEdit.Add)
                 {
-                    
+
 
                     await _recipesEndPointAPI.InsertRecipe(recipeModel);
                     await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
@@ -177,7 +221,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     recipeModel.RecipeId = _recipeId;
                     var result = await _recipesEndPointAPI.EditRecipe(recipeModel);
 
-                    if(result)
+                    if (result)
                     {
                         MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano");
                     }
@@ -192,12 +236,31 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public void AddIngredientTextBox()
         {
-            RecipeIngredients.Add("Dodane");
+            try
+            {
+                RecipeIngredients.Add(IngredientInsert);
+                IngredientInsert = "";
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+
         }
 
-        public void DeleteIngredient(object model)
+        public void DeleteIngredient()
         {
-            RecipeIngredients.Add("Dodane");
+            try
+            {
+                RecipeIngredients.Remove(SelectedIngredient);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+
         }
 
         public async Task Back()
