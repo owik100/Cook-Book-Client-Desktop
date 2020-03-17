@@ -31,6 +31,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         private AddOrEdit _addOrEdit = AddOrEdit.Add;
         private string _submitText;
+        private string _titleText;
         private int _recipeId;
 
         public AddRecipeViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
@@ -40,6 +41,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _eventAggregator.SubscribeOnPublishedThread(this);
 
             SubmitText = "Dodaj";
+            TitleText = "Dodaj nowy przepis";
         }
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
@@ -49,6 +51,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _addOrEdit = AddOrEdit.Edit;
                 _recipeId = message.RecipeModel.RecipeId;
                 SubmitText = "Zaktualizuj";
+                TitleText = "Edytuj przepis";
 
                 RecipeName = message.RecipeModel.Name;
                 RecipeIngredients = string.Join(";", message.RecipeModel.Ingredients);
@@ -65,6 +68,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _submitText = value;
                 NotifyOfPropertyChange(() => SubmitText);
+            }
+        }
+
+        public string TitleText
+        {
+            get { return _titleText; }
+            set
+            {
+                _titleText = value;
+                NotifyOfPropertyChange(() => TitleText);
             }
         }
 

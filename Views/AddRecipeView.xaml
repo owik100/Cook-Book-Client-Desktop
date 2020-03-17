@@ -6,49 +6,61 @@
              xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
              mc:Ignorable="d" Background="White" FontSize="24"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0"  Margin=" 0 0 10 0">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin=" 0 0 0 10" 
+                   FontSize="36" TextAlignment="Center" Text="{Binding TitleText}">
+        </TextBlock>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="8*" />
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            
+
+            <TextBlock Grid.Column="0" Grid.Row="0"  Margin=" 0 0 10 0">
              Nazwa przepisu:
-        </TextBlock>
-        <TextBox x:Name="RecipeName" Grid.Column="1" Grid.Row="0"   MinWidth="350" Margin="0 0 0 10"/>
+            </TextBlock>
+            <TextBox x:Name="RecipeName" Grid.Column="1" Grid.Row="0"   MinWidth="350" Margin="0 0 0 10"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="1"  Margin=" 0 0 10 0">
+            <TextBlock Grid.Column="0" Grid.Row="1"  Margin=" 0 0 10 0">
              Składniki:
-        </TextBlock>
-        <TextBox x:Name="RecipeIngredients" Grid.Column="1" Grid.Row="1"   MinWidth="350" Margin="0 0 0 10"/>
+            </TextBlock>
+            <TextBox x:Name="RecipeIngredients" Grid.Column="1" Grid.Row="1"   MinWidth="350" Margin="0 0 0 10"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="2"  Margin=" 0 0 10 0">
+            <TextBlock Grid.Column="0" Grid.Row="2"  Margin=" 0 0 10 0">
              Przepis:
-        </TextBlock>
-        <TextBox x:Name="RecipeInstructions" Grid.Column="1" Grid.Row="2"   MinWidth="350" Margin="0 0 0 10"/>
+            </TextBlock>
+            <TextBox x:Name="RecipeInstructions" Grid.Column="1" Grid.Row="2" MinWidth="350" Margin="0 0 0 10"
+                    TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
 
-        <Button Grid.Row="3" x:Name="OpenFile">
-            Open file
-        </Button>
-        <TextBlock Grid.Column="1" Grid.Row="3"  Margin=" 0 0 10 0"  x:Name="FileName">
-             
-        </TextBlock>
+            <Button Grid.Row="3" Grid.Column="0"  Margin="5" x:Name="OpenFile" >
+                Open file
+            </Button>
+            <TextBlock Grid.Column="1" Grid.Row="3"  Margin=" 0 0 10 0"  x:Name="FileName">
 
-        <Button x:Name="AddRecipeSubmit" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="1" Margin="10" Padding="10"
+            </TextBlock>
+
+            <Button x:Name="AddRecipeSubmit" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="1" Margin="5"
           Content="{Binding SubmitText}">
-        </Button>
+            </Button>
 
-        <Button x:Name="Back" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Margin="10" Padding="10">
-            Wróć
-        </Button>
-    </Grid>
+            <Button x:Name="Back" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1" Margin="5" >
+                Wróć
+            </Button>
+        </Grid>
+    </DockPanel>
+    
+    
 </UserControl>
