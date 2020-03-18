@@ -52,7 +52,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             try
             {
                 tempRecipes = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
-
             }
             catch (Exception ex)
             {
@@ -64,6 +63,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
+                List<string> DontDeletetheseImages = new List<string>();
+
                 foreach (var item in tempRecipes)
                 {
                     if (item.NameOfImage == null)
@@ -76,6 +77,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     if (TempData.ImageExistOnDisk(item.NameOfImage))
                     {
                         item.ImagePath = TempData.GetImagePath(item.NameOfImage);
+                        DontDeletetheseImages.Add(item.NameOfImage);
                         continue;
                     }
 
@@ -84,9 +86,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     if(downloadStatus)
                     {
                         item.ImagePath = TempData.GetImagePath(item.NameOfImage);
+                        DontDeletetheseImages.Add(item.NameOfImage);
                     }
                    
                 }
+
+                TempData.DeleteUnusedImages(DontDeletetheseImages);
 
                 Recipes = new BindingList<RecipeModel>(tempRecipes);
             }
@@ -144,7 +149,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 {
                     var result = await _recipesEndPointAPI.DeleteRecipe(model.RecipeId.ToString());
 
-                    await LoadRecipes();
+                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
                 }
             }
             catch (Exception ex)
