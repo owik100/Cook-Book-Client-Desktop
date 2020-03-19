@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <RootNamespace>Cook_Book_Client_Desktop</RootNamespace>
+    <StartupObject>Cook_Book_Client_Desktop.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\cook book text logo.png" />
@@ -15,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.105-alpha" />
+    <PackageReference Include="log4net" Version="2.0.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cook-Book-Client-Desktop-Library\Cook-Book-Client-Desktop-Library.csproj" />
@@ -24,5 +26,10 @@
     <Resource Include="Resources\cookbook logo.png" />
     <Resource Include="Resources\food template.png" />
     <Resource Include="Resources\zapiekanka.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

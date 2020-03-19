@@ -17,6 +17,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class LoginViewModel : Screen
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private string _userName;
         private string _password;
         private string _loginInfoMessage;
@@ -25,12 +27,17 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private IAPIHelper _apiHelper;
         private IEventAggregator _eventAggregator;
 
+
         public LoginViewModel(IAPIHelper ApiHelper, IEventAggregator EventAggregator)
         {
             _apiHelper = ApiHelper;
             _eventAggregator = EventAggregator;
 
             LoadCredentials();
+
+            _logger.Info("Hello logging world! LOGGGG");
+
+
         }
 
         private void LoadCredentials()
