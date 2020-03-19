@@ -26,8 +26,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _selectedIngredient;
         private string _ingredientInsert;
         private string _recipeInstructions;
-
-        private string _fileName;
         private string _image;
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
@@ -57,6 +55,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 RecipeName = message.RecipeModel.Name;
                 RecipeIngredients = new BindingList<string>(message.RecipeModel.Ingredients.ToList());
                 RecipeInstructions = message.RecipeModel.Instruction;
+                ImagePath = message.RecipeModel.ImagePath;
             }
 
             await Task.CompletedTask;
@@ -81,18 +80,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => ImagePath);
             }
         }
-
-
-        public string FileName
-        {
-            get { return _fileName; }
-            set
-            {
-                _fileName = value;
-                NotifyOfPropertyChange(() => FileName);
-            }
-        }
-
 
         public string RecipeName
         {
@@ -179,6 +166,21 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         }
 
+        public bool CanDeleteFileModel
+        {
+            get
+            {
+                bool output = false;
+
+                if (!string.IsNullOrWhiteSpace(ImagePath) && ImagePath != "pack://application:,,,/Resources/food template.png")
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
         public void OpenFile()
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -189,8 +191,27 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
             if (result == true)
             {
-                FileName = dlg.FileName;
                 ImagePath = dlg.FileName;
+                NotifyOfPropertyChange(() => ImagePath); 
+                NotifyOfPropertyChange(() => CanDeleteFileModel); 
+            }
+        }
+
+        public void DeleteFileModel()
+        {
+            try
+            {
+                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć obrazek?", "Potwierdź usunięcie", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    ImagePath = "pack://application:,,,/Resources/food template.png";
+                    NotifyOfPropertyChange(() => ImagePath);
+                    NotifyOfPropertyChange(() => CanDeleteFileModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }
 
@@ -209,20 +230,31 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     NameOfImage = ImagePath
                 };
 
+                if (recipeModel.NameOfImage == "pack://application:,,,/Resources/food template.png")
+                {
+                    recipeModel.NameOfImage = "";
+                }
+
                 if (_addOrEdit == AddOrEdit.Add)
                 {
-
-
                     await _recipesEndPointAPI.InsertRecipe(recipeModel);
                     await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
                 }
-                else
+                else if (_addOrEdit == AddOrEdit.Edit)
                 {
                     recipeModel.RecipeId = _recipeId;
                     var result = await _recipesEndPointAPI.EditRecipe(recipeModel);
 
                     if (result)
                     {
+                        if(recipeModel.NameOfImage == "")
+                        {
+                            recipeModel.NameOfImage = "pack://application:,,,/Resources/food template.png";
+                        }
+
+                        NotifyOfPropertyChange(() => ImagePath);
+                        NotifyOfPropertyChange(() => CanDeleteFileModel);
+
                         MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano");
                     }
                 }

@@ -70,11 +70,16 @@
                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
 
         <Button Grid.Row="4" Grid.Column="0"  Margin="5" x:Name="OpenFile" >
-            Open file
+           Wczytaj obrazek
         </Button>
-        <TextBlock Grid.Column="1" Grid.Row="4"  Margin=" 0 0 10 0"  x:Name="FileName">
 
-        </TextBlock>
+        <Button Grid.Row="4" Grid.Column="3"  Margin="5" x:Name="DeleteFileModel" >
+           Usuń obrazek
+        </Button>
+
+        <Image Grid.Column="1" Grid.Row="4"  Margin=" 0 0 10 0" Source="{Binding ImagePath}">
+
+        </Image>
 
         <Button x:Name="AddRecipeSubmit" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1" Margin="5"
           Content="{Binding SubmitText}">
