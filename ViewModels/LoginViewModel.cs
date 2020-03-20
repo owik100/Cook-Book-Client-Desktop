@@ -34,22 +34,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _eventAggregator = EventAggregator;
 
             LoadCredentials();
-
-            _logger.Info("Hello logging world! LOGGGG");
-
-
         }
 
-        private void LoadCredentials()
-        {
-            var cred = WindowsCredentials.LoadLoginPassword();
-            if (cred.UserName?.Length > 0 && cred.Password?.Length > 0)
-            {
-                UserName = cred.UserName;
-                Password = cred.Password;
-                RemeberMe = true;
-            }
-        }
+        #region Props
 
         public bool RemeberMe
         {
@@ -60,7 +47,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => RemeberMe);
             }
         }
-
 
         public string UserName
         {
@@ -125,6 +111,26 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
 
         }
+        #endregion
+
+        private void LoadCredentials()
+        {
+            try
+            {
+                var cred = WindowsCredentials.LoadLoginPassword();
+                if (cred.UserName?.Length > 0 && cred.Password?.Length > 0)
+                {
+                    UserName = cred.UserName;
+                    Password = cred.Password;
+                    RemeberMe = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+            }        
+        }
+
 
         public async Task LogIn()
         {
@@ -149,6 +155,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 LoginInfoMessage = ex.Message;
             }
         }
@@ -161,6 +168,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 LoginInfoMessage = ex.Message;
             }
         }

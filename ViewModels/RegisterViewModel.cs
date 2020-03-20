@@ -12,6 +12,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class RegisterViewModel : Screen
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private string _userName;
         private string _password;
         private string _passwordRepeat;
@@ -72,7 +74,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-
         public string RegisterInfoMessage
         {
             get { return _registerInfoMessage; }
@@ -127,7 +128,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task Back()
         {
-            await _eventAggregator.PublishOnUIThreadAsync(new LoginWindowEvent(), new CancellationToken());
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new LoginWindowEvent(), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+
+                _logger.Error("Got exception", ex);
+            }
         }
 
         public async Task Register()
@@ -151,6 +160,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 RegisterInfoMessage = ex.Message;
             }
         }

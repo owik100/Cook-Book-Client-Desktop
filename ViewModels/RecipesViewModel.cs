@@ -16,6 +16,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class RecipesViewModel : Screen
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private BindingList<RecipeModel> _recipes;
         private IEventAggregator _eventAggregator;
@@ -37,6 +39,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             //await Task.WhenAll(task1, task2);
         }
 
+        #region Props
         public BindingList<RecipeModel> Recipes
         {
             get { return _recipes; }
@@ -46,6 +49,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => Recipes);
             }
         }
+        #endregion
 
         private async Task LoadRecipes()
         {
@@ -55,6 +59,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }
@@ -69,7 +74,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 {
                     if (item.NameOfImage == null)
                     {
-                        //TODO dać ścieżkę na temp do configa
                         item.ImagePath = "pack://application:,,,/Resources/food template.png";
                         continue;
                     }
@@ -97,6 +101,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
@@ -110,6 +115,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }
@@ -122,6 +128,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
@@ -136,6 +143,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }
@@ -154,6 +162,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }

@@ -14,6 +14,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class RecipePreviewViewModel : Screen, IHandle<SendRecipe>
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private RecipeModel currentRecipe;
 
         private string _recipeName;
@@ -34,18 +36,26 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
         {
-            currentRecipe = message.RecipeModel;
+            try
+            {
+                currentRecipe = message.RecipeModel;
 
-            //TODO Mapper
-            _recipeId = currentRecipe.RecipeId;
-            RecipeName = currentRecipe.Name;
-            RecipeIngredients =  (currentRecipe.Ingredients).ToList();
-            RecipeInstructions = currentRecipe.Instruction;
-            ImagePath = currentRecipe.ImagePath;
+                //TODO Mapper
+                _recipeId = currentRecipe.RecipeId;
+                RecipeName = currentRecipe.Name;
+                RecipeIngredients = (currentRecipe.Ingredients).ToList();
+                RecipeInstructions = currentRecipe.Instruction;
+                ImagePath = currentRecipe.ImagePath;
 
-            await Task.CompletedTask;
+                await Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+            }  
         }
 
+        #region Props
         public string ImagePath
         {
             get { return _imagePath; }
@@ -66,7 +76,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        public List<string>RecipeIngredients
+        public List<string> RecipeIngredients
         {
             get { return _recipeIntegradts; }
             set
@@ -85,10 +95,21 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => RecipeInstructions);
             }
         }
+        #endregion
+
 
         public async Task Back()
         {
-            await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+            
         }
 
         public async Task EditRecipe()
@@ -99,6 +120,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }
@@ -117,6 +139,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }

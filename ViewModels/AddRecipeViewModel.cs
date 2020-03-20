@@ -21,6 +21,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class AddRecipeViewModel : Screen, IHandle<SendRecipe>
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private string _recipeName;
         private BindingList<string> _recipeIntegradts = new BindingList<string>();
         private string _selectedIngredient;
@@ -46,21 +48,29 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
         {
-            if (message != null)
+            try
             {
-                _addOrEdit = AddOrEdit.Edit;
-                _recipeId = message.RecipeModel.RecipeId;
-                SubmitText = "Zaktualizuj";
+                if (message != null)
+                {
+                    _addOrEdit = AddOrEdit.Edit;
+                    _recipeId = message.RecipeModel.RecipeId;
+                    SubmitText = "Zaktualizuj";
 
-                RecipeName = message.RecipeModel.Name;
-                RecipeIngredients = new BindingList<string>(message.RecipeModel.Ingredients.ToList());
-                RecipeInstructions = message.RecipeModel.Instruction;
-                ImagePath = message.RecipeModel.ImagePath;
+                    RecipeName = message.RecipeModel.Name;
+                    RecipeIngredients = new BindingList<string>(message.RecipeModel.Ingredients.ToList());
+                    RecipeInstructions = message.RecipeModel.Instruction;
+                    ImagePath = message.RecipeModel.ImagePath;
+                }
+
+                await Task.CompletedTask;
             }
-
-            await Task.CompletedTask;
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+            }          
         }
 
+        #region Props
         public string SubmitText
         {
             get { return _submitText; }
@@ -130,7 +140,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _ingredientInsert = value;
                 NotifyOfPropertyChange(() => IngredientInsert);
-                NotifyOfPropertyChange(() => CanAddIngredientTextBox); 
+                NotifyOfPropertyChange(() => CanAddIngredientTextBox);
             }
         }
 
@@ -180,21 +190,31 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 return output;
             }
         }
+        #endregion
 
         public void OpenFile()
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.DefaultExt = ".jpeg";
-            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
-
-            Nullable<bool> result = dlg.ShowDialog();
-
-            if (result == true)
+            try
             {
-                ImagePath = dlg.FileName;
-                NotifyOfPropertyChange(() => ImagePath); 
-                NotifyOfPropertyChange(() => CanDeleteFileModel); 
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                dlg.DefaultExt = ".jpeg";
+                dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+
+                Nullable<bool> result = dlg.ShowDialog();
+
+                if (result == true)
+                {
+                    ImagePath = dlg.FileName;
+                    NotifyOfPropertyChange(() => ImagePath);
+                    NotifyOfPropertyChange(() => CanDeleteFileModel);
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+
         }
 
         public void DeleteFileModel()
@@ -211,6 +231,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }
@@ -261,9 +282,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
-
         }
 
         public void AddIngredientTextBox()
@@ -275,7 +296,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
-
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
@@ -289,17 +310,22 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
             catch (Exception ex)
             {
-
+                _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
-
         }
 
         public async Task Back()
         {
-            await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }      
         }
-
-
     }
 }
