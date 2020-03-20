@@ -37,6 +37,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _submitText;
         private int _recipeId;
 
+        private bool reloadNeeded = false;
+
         public AddRecipeViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
@@ -259,7 +261,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 if (_addOrEdit == AddOrEdit.Add)
                 {
                     await _recipesEndPointAPI.InsertRecipe(recipeModel);
-                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                    reloadNeeded = true;
+
+                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded), new CancellationToken());
                 }
                 else if (_addOrEdit == AddOrEdit.Edit)
                 {
@@ -276,6 +280,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                         NotifyOfPropertyChange(() => ImagePath);
                         NotifyOfPropertyChange(() => CanDeleteFileModel);
 
+                        reloadNeeded = true;
                         MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano");
                     }
                 }
@@ -319,7 +324,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded), new CancellationToken());
             }
             catch (Exception ex)
             {

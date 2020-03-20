@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
-    public class RecipesViewModel : Screen
+    public class RecipesViewModel : Screen, IHandle<ReloadAllRecipes>
     {
         private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -28,15 +28,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
             _eventAggregator = EventAggregator;
+            _eventAggregator.SubscribeOnPublishedThread(this);
         }
 
-        protected async override void OnViewLoaded(object view)
+        public async Task HandleAsync(ReloadAllRecipes message, CancellationToken cancellationToken)
         {
-            base.OnViewLoaded(view);
-            await LoadRecipes();
-            await LoadImages();
-
-            //await Task.WhenAll(task1, task2);
+           if(message!=null)
+            {
+                await LoadRecipes();
+                await LoadImages();
+            }
         }
 
         #region Props
@@ -133,6 +134,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
 
         }
+
       
     }
 }

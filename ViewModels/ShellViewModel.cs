@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
-    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>, IHandle<AddRecipeWindowEvent>, 
+    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>, IHandle<AddRecipeWindowEvent>,
         IHandle<RegisterWindowEvent>, IHandle<LoginWindowEvent>, IHandle<RecipePreviewEvent>
     {
         private IEventAggregator _eventAggregator;
@@ -60,7 +60,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task HandleAsync(AddRecipeWindowEvent message, CancellationToken cancellationToken)
         {
-            if(message.AddOrEdit == AddOrEdit.Add)
+            if (message.AddOrEdit == AddOrEdit.Add)
             {
                 await ActivateItemAsync(IoC.Get<AddRecipeViewModel>(), cancellationToken);
             }
@@ -68,12 +68,21 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 await ActivateItemAsync(IoC.Get<AddRecipeViewModel>(), cancellationToken);
                 await _eventAggregator.PublishOnUIThreadAsync(new SendRecipe(message.RecipeModel), new CancellationToken());
-            }            
+            }
         }
 
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
-            await ActivateItemAsync(_recipesViewModel, cancellationToken);
+            if (message.ReloadNeeded == true)
+            {
+                await ActivateItemAsync(_recipesViewModel, cancellationToken);
+                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(), new CancellationToken());
+            }
+            else
+            {
+                await ActivateItemAsync(_recipesViewModel, cancellationToken);
+            }
+
             NotifyOfPropertyChange(() => IsLogged);
         }
 
@@ -86,7 +95,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public async Task HandleAsync(LoginWindowEvent message, CancellationToken cancellationToken)
         {
             //Uruchom okno z nowa instancja
-            await  ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
         }
         public async Task HandleAsync(RecipePreviewEvent message, CancellationToken cancellationToken)
         {
@@ -97,6 +106,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public void ExitApplication()
         {
             TryCloseAsync();
-        }    
+        }
     }
 }

@@ -151,7 +151,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     WindowsCredentials.DeleteLoginPassword();
                 }
 
-                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: true), new CancellationToken());
             }
             catch (Exception ex)
             {

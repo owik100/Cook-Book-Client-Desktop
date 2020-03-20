@@ -102,7 +102,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: false), new CancellationToken());
             }
             catch (Exception ex)
             {
@@ -134,7 +134,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 {
                     var result = await _recipesEndPointAPI.DeleteRecipe(currentRecipe.RecipeId.ToString());
 
-                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded:true), new CancellationToken());
                 }
             }
             catch (Exception ex)

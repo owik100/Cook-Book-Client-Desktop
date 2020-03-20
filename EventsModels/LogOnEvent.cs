@@ -2,6 +2,11 @@
 {
     public class LogOnEvent
     {
+        public LogOnEvent(bool reloadNeeded)
+        {
+            ReloadNeeded = reloadNeeded;
+        }
 
+        public bool ReloadNeeded { get; private set; }
     }
 }
