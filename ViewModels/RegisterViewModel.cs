@@ -126,19 +126,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
         }
         #endregion
 
-        public async Task Back()
-        {
-            try
-            {
-                await _eventAggregator.PublishOnUIThreadAsync(new LoginWindowEvent(), new CancellationToken());
-            }
-            catch (Exception ex)
-            {
-
-                _logger.Error("Got exception", ex);
-            }
-        }
-
         public async Task Register()
         {
             try
@@ -162,6 +149,19 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _logger.Error("Got exception", ex);
                 RegisterInfoMessage = ex.Message;
+            }
+        }
+
+        public async Task Back()
+        {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new LoginWindowEvent(), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+
+                _logger.Error("Got exception", ex);
             }
         }
 

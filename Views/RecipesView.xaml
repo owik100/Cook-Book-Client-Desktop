@@ -32,13 +32,7 @@
                     <DataTemplate>
                         <WrapPanel Margin="5">
                             <Button MaxHeight="30" FontSize="15" Margin="2 0 2 0" cal:Message.Attach="RecipePreview($dataContext)">
-                                Szczegóły
-                            </Button>
-                            <Button MaxHeight="30" FontSize="15" Margin="2 0 2 0" cal:Message.Attach="EditRecipe($dataContext)">
-                                Edytuj
-                            </Button>
-                            <Button MaxHeight="30" FontSize="15" Margin="2 0 2 0" cal:Message.Attach="DeleteRecipe($dataContext)">
-                                Usuń
+                                Podgląd
                             </Button>
                             <Image  MaxHeight="150" MaxWidth="150" Source="{Binding ImagePath}"
                    Stretch="Uniform" StretchDirection="DownOnly" >

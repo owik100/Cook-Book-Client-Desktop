@@ -133,38 +133,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
 
         }
-
-        public async Task EditRecipe(RecipeModel model)
-        {
-            try
-            {
-                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(AddOrEdit.Edit, model), new CancellationToken());
-
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Got exception", ex);
-                MessageBox.Show(ex.Message, ex.GetType().ToString());
-            }
-        }
-
-        public async Task DeleteRecipe(RecipeModel model)
-        {
-            try
-            {
-                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć {model.Name} ?", "Potwierdź usunięcie", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
-                {
-                    var result = await _recipesEndPointAPI.DeleteRecipe(model.RecipeId.ToString());
-
-                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Got exception", ex);
-                MessageBox.Show(ex.Message, ex.GetType().ToString());
-            }
-        }
+      
     }
 }
