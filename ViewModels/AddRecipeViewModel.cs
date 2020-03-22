@@ -219,7 +219,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
                 dlg.DefaultExt = ".jpeg";
-                dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+                dlg.Filter = "Image Files| *.jpg; *.jpeg; *.png; *.gif; *.tif;";
 
                 Nullable<bool> result = dlg.ShowDialog();
 

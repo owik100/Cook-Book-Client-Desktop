@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
-             mc:Ignorable="d" Background="White" FontSize="24"
+             mc:Ignorable="d" Background="White" FontSize="14"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,30 +30,30 @@
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         </StackPanel>
 
-        <TextBlock TextAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"  Margin=" 0 0 10 0">
+        <TextBlock TextAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"  Margin=" 0 0 10 0">
              Nazwa:
         </TextBlock>
         <TextBox x:Name="RecipeName" Grid.Column="1" Grid.Row="1"   MinWidth="350" Margin="0 0 0 10"/>
 
-        <TextBlock Grid.Column="3" Grid.Row="0" TextAlignment="Center"  Margin=" 0 0 10 0">
+        <TextBlock Grid.Column="3" Grid.Row="0" TextAlignment="Center" VerticalAlignment="Bottom"  Margin=" 0 0 0 10">
              Składniki:
         </TextBlock>
 
-        <TextBox x:Name="IngredientInsert" Grid.Column="3" Grid.Row="1"   Margin="0 0 0 10"/>
+        <TextBox x:Name="IngredientInsert" Grid.Column="3" Grid.Row="1" Margin="0 0 5 10"/>
 
         <StackPanel Grid.Column="3" Grid.Row="2">
-            <Button  cal:Message.Attach="AddIngredientTextBox">
+            <Button  cal:Message.Attach="AddIngredientTextBox" Margin="0 0 5 5">
                 Dodaj
             </Button>
 
-            <Button    cal:Message.Attach="DeleteIngredient">
+            <Button cal:Message.Attach="DeleteIngredient" Margin="0 0 5 5">
                 Usuń
             </Button>
         </StackPanel>
 
-        <ScrollViewer Grid.Column="3" Grid.Row="3" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Column="3" Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <StackPanel x:Name="IngredientsStackPanel" >
-                <ListBox ItemsSource="{Binding RecipeIngredients, Mode=TwoWay}" SelectedItem="{Binding SelectedIngredient}">
+                <ListBox Height="200" ItemsSource="{Binding RecipeIngredients, Mode=TwoWay}" SelectedItem="{Binding SelectedIngredient}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Path=. , Mode=TwoWay}"/>
@@ -63,18 +63,18 @@
             </StackPanel>
         </ScrollViewer>
 
-        <TextBlock Grid.Column="0" TextAlignment="Center" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center"  Margin=" 0 0 10 0">
+        <TextBlock Grid.Column="0" HorizontalAlignment="Right" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center"  Margin=" 0 0 10 0">
              Przepis:
         </TextBlock>
         <TextBox x:Name="RecipeInstructions" Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" MinWidth="350" Margin="0 0 0 10"
                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
 
         <Button Grid.Row="4" Grid.Column="0"  Margin="5" x:Name="OpenFile" >
-           Wczytaj obrazek
+           Wczytaj obraz
         </Button>
 
         <Button Grid.Row="4" Grid.Column="3"  Margin="5" x:Name="DeleteFileModel" >
-           Usuń obrazek
+           Usuń obraz
         </Button>
 
         <Image Grid.Column="1" Grid.Row="4"  Margin=" 0 0 10 0" Source="{Binding ImagePath}">
