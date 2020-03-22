@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
-             mc:Ignorable="d" Background="White" FontSize="24" 
-             d:DesignHeight="450" Width="600">
+             mc:Ignorable="d" Background="White" 
+             d:DesignHeight="450" Width="600" FontSize="14">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -21,8 +21,10 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        
         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
                    HorizontalAlignment="Center" FontSize="64" FontFamily="Segoe UI Light"
                    Margin="0 0 0 20">
@@ -30,39 +32,39 @@
         </TextBlock>
 
         <TextBlock x:Name="LoginInfoMessage" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
-                   Margin="0 0 0 10"  MaxWidth="350"
+                   Margin="0 0 0 10"  MaxWidth="350" FontWeight="Bold"
                    TextWrapping="Wrap" TextAlignment="Center" Visibility="{Binding IsLoginInfoMessageVisible, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Collapsed}">
         </TextBlock>
 
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin=" 0 0 10 0">
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin=" 0 0 10 10" VerticalAlignment="Center" HorizontalAlignment="Right">
              Login:
         </TextBlock>
-        <TextBox x:Name="UserName" Grid.Row="2"  Grid.Column="2" MinWidth="350"
-                 MaxWidth="350" Margin="0 0 0 10"/>
+        <TextBox x:Name="UserName" Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="2" MinWidth="350"
+                 MaxWidth="350" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 0 0 10" />
 
-        <TextBlock Grid.Row="3" Grid.Column="1" Margin=" 0 0 10 0"  >
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin=" 0 0 10 10" VerticalAlignment="Center" HorizontalAlignment="Right" >
              Hasło:
         </TextBlock>
-        <PasswordBox x:Name="Password" Grid.Row="3"  Grid.Column="2" MinWidth="350" 
-                     MaxWidth="350" Margin="0 0 0 10"/>
+        <PasswordBox x:Name="Password" Grid.Row="3"  Grid.Column="1" Grid.ColumnSpan="2" MinWidth="350" 
+                     MaxWidth="350" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 0 0 10"/>
 
         <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Padding="20 5" 
                 HorizontalAlignment="Center" x:Name="LogIn" IsDefault="True">
             Zaloguj
         </Button>
 
-        <CheckBox x:Name="RemeberMe" Grid.Row="5" Grid.Column="1"  FlowDirection="RightToLeft" 
-                  VerticalContentAlignment="Center" VerticalAlignment="Center">
-            <TextBlock VerticalAlignment="Center"  FlowDirection="LeftToRight" Text="Pamiętaj" />
+        <CheckBox x:Name="RemeberMe" Grid.Row="4" Grid.Column="0"  Margin=" 0 0 10 0"  FlowDirection="RightToLeft" 
+                  VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <TextBlock FontSize="14" VerticalAlignment="Center"  FlowDirection="LeftToRight" Text="Pamiętaj" />
         </CheckBox>
 
-        <Button Content="Nie masz jeszcze konta? Zarejestruj się!" x:Name="RegisterForm"
-                Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Margin=" 0 40 0 0">
-            <Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <ContentPresenter />
-                </ControlTemplate>
-            </Button.Template>
+        <TextBlock FontSize="14" Grid.Row="6"  Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"  Margin=" 0 20 0 10">
+            Nie masz jeszcze konta? Zarejestruj się!
+        </TextBlock>
+        
+        <Button Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Padding="20 5" 
+                HorizontalAlignment="Center" x:Name="RegisterForm">
+            Zarejestruj
         </Button>
     </Grid>
 </UserControl>
