@@ -100,6 +100,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _recipeName = value;
                 NotifyOfPropertyChange(() => RecipeName);
+                NotifyOfPropertyChange(() => CanAddRecipeSubmit);
             }
         }
 
@@ -110,6 +111,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _recipeIntegradts = value;
                 NotifyOfPropertyChange(() => RecipeIngredients);
+                NotifyOfPropertyChange(() => CanAddRecipeSubmit);
             }
         }
 
@@ -132,6 +134,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _recipeInstructions = value;
                 NotifyOfPropertyChange(() => RecipeInstructions);
+                NotifyOfPropertyChange(() => CanAddRecipeSubmit);
             }
         }
 
@@ -192,6 +195,22 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 return output;
             }
         }
+
+        public bool CanAddRecipeSubmit
+        {
+            get
+            {
+                bool output = false;
+
+                if (!string.IsNullOrWhiteSpace(RecipeName) && !string.IsNullOrWhiteSpace(RecipeInstructions) && RecipeIngredients.Count>0)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
         #endregion
 
         public void OpenFile()
@@ -242,9 +261,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                //TODO Zrobic fabryke na to
-                // Walidacja
-                //Delegat?
                 RecipeModel recipeModel = new RecipeModel
                 {
                     Name = RecipeName,
@@ -298,6 +314,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 RecipeIngredients.Add(IngredientInsert);
                 IngredientInsert = "";
+                NotifyOfPropertyChange(() => CanAddRecipeSubmit);
             }
             catch (Exception ex)
             {
@@ -312,6 +329,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             try
             {
                 RecipeIngredients.Remove(SelectedIngredient);
+                NotifyOfPropertyChange(() => CanAddRecipeSubmit);
             }
             catch (Exception ex)
             {
