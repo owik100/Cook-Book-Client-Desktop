@@ -26,7 +26,7 @@
 
 
         <ScrollViewer x:Name="MyScrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <ListBox x:Name="Recipes">
+            <ListBox x:Name="Recipes" SelectedItem="{Binding SelectedRecipe}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel ItemWidth="175" ItemHeight="175" Orientation="Horizontal" Width="{Binding ElementName=MyScrollViewer, Path=ViewportWidth}"  />
@@ -34,7 +34,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical">
+                        <StackPanel cal:Message.Attach="[Event MouseLeftButtonUp] = [Action RecipePreview($dataContext)]"  Orientation="Vertical" Cursor="Hand">
                             <Image Height="100" Width="175" Source="{Binding ImagePath}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch"  ></Image>
                             <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{Binding Name}"/>
                             <!--<Button MaxHeight="30" Margin="2 0 10 0" cal:Message.Attach="RecipePreview($dataContext)">
