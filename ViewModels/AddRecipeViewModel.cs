@@ -242,7 +242,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć obrazek?", "Potwierdź usunięcie", MessageBoxButton.YesNo);
+                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć obrazek?", "Potwierdź usunięcie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     ImagePath = "pack://application:,,,/Resources/food template.png";
@@ -297,7 +297,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                         NotifyOfPropertyChange(() => CanDeleteFileModel);
 
                         reloadNeeded = true;
-                        MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano");
+                        MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano", MessageBoxButton.OK,MessageBoxImage.Information);
                     }
                 }
             }

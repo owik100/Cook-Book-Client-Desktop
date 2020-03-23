@@ -19,6 +19,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _passwordRepeat;
         private string _email;
         private string _registerInfoMessage;
+        private bool _duringOperation;
 
         private IAPIHelper _apiHelper;
         private IEventAggregator _eventAggregator;
@@ -106,7 +107,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 bool output = false;
 
-                if (UserName?.Length > 0 && Email?.Length > 0 && Password?.Length > 0 && PasswordRepeat?.Length > 0)
+                if (UserName?.Length > 0 && Email?.Length > 0 && Password?.Length > 0 && PasswordRepeat?.Length > 0 && !_duringOperation)
                 {
                     if (Password.Equals(PasswordRepeat))
                     {
@@ -130,6 +131,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
+                _duringOperation = true;
+                NotifyOfPropertyChange(() => CanRegister);
                 RegisterInfoMessage = "Rejestracja...";
 
                 RegisterModel user = new RegisterModel
@@ -144,9 +147,13 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 RegisterInfoMessage = "Rejestracja pomyślna. Możesz się teraz zalogować";
 
                 Clear();
+                _duringOperation = false;
+                NotifyOfPropertyChange(() => CanRegister);
             }
             catch (Exception ex)
             {
+                _duringOperation = false;
+                NotifyOfPropertyChange(() => CanRegister);
                 _logger.Error("Got exception", ex);
                 RegisterInfoMessage = ex.Message;
             }

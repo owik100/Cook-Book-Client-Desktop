@@ -23,6 +23,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _password;
         private string _loginInfoMessage;
         private bool _remeberMe;
+        private bool _duringOperation;
 
         private IAPIHelper _apiHelper;
         private IEventAggregator _eventAggregator;
@@ -102,7 +103,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 bool output = false;
 
-                if (UserName?.Length > 0 && Password?.Length > 0)
+                if (UserName?.Length > 0 && Password?.Length > 0 && !_duringOperation)
                 {
                     output = true;
                 }
@@ -136,6 +137,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
+                _duringOperation = true;
+                NotifyOfPropertyChange(() => CanLogIn);
                 LoginInfoMessage = "Łączenie..";
                 AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
                 LoginInfoMessage = "";
@@ -152,11 +155,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 }
 
                 await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: true), new CancellationToken());
+                _duringOperation = false;
+                NotifyOfPropertyChange(() => CanLogIn);
             }
             catch (Exception ex)
             {
                 _logger.Error("Got exception", ex);
                 LoginInfoMessage = ex.Message;
+                _duringOperation = false;
+                NotifyOfPropertyChange(() => CanLogIn);
             }
         }
 

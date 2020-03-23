@@ -8,6 +8,8 @@
         xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        Dialog:DialogParticipation.Register="{Binding}"
         Title="Cook Book" MinHeight="550" MinWidth="750" Height="550" Width="750">
 
     <DockPanel>

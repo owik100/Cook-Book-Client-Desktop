@@ -129,7 +129,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć {currentRecipe.Name} ?", "Potwierdź usunięcie", MessageBoxButton.YesNo);
+                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć {currentRecipe.Name} ?", "Potwierdź usunięcie", MessageBoxButton.YesNo,MessageBoxImage.Warning);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     var result = await _recipesEndPointAPI.DeleteRecipe(currentRecipe.RecipeId.ToString());
