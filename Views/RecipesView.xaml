@@ -18,26 +18,32 @@
 
         <TextBlock Grid.Row="0" 
                    HorizontalAlignment="Center" FontSize="55" FontFamily="Segoe UI Light"
-                   Margin="0 0 0 20">
+                   Margin="0 0 0 10">
             Twoje przepisy
         </TextBlock>
-        
-        <ScrollViewer Grid.Column="0" Grid.Row="1"  Margin="20 0 0 0" VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="Recipes" Grid.Row="1">
-                <ItemsControl.ItemTemplate>
+
+
+
+
+        <ScrollViewer x:Name="MyScrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <ListBox x:Name="Recipes">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel ItemWidth="175" ItemHeight="175" Orientation="Horizontal" Width="{Binding ElementName=MyScrollViewer, Path=ViewportWidth}"  />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <WrapPanel Margin="5">
-                            <Button MaxHeight="30" Margin="2 0 10 0" cal:Message.Attach="RecipePreview($dataContext)">
+                        <StackPanel Orientation="Vertical">
+                            <Image Height="100" Width="175" Source="{Binding ImagePath}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch"  ></Image>
+                            <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{Binding Name}"/>
+                            <!--<Button MaxHeight="30" Margin="2 0 10 0" cal:Message.Attach="RecipePreview($dataContext)">
                                 Podgląd
-                            </Button>
-                            <Image  MaxHeight="200" MaxWidth="200" Source="{Binding ImagePath}"
-                            Stretch="Uniform" StretchDirection="DownOnly" >
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" FontSize="25" Margin="10 0 0 0"/>
-                        </WrapPanel>
+                            </Button>-->
+                        </StackPanel>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </ScrollViewer>
         
         <DockPanel Grid.Row="2">
