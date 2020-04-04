@@ -46,6 +46,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _eventAggregator.SubscribeOnPublishedThread(this);
 
             SubmitText = "Dodaj";
+            ImagePath = "pack://application:,,,/Resources/food template.png";
         }
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
