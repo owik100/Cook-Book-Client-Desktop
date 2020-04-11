@@ -1,4 +1,4 @@
-﻿using Cook_Book_Client_Desktop_Library.Models;
+﻿using Cook_Book_Shared_Code.Models;
 
 namespace Cook_Book_Client_Desktop.EventsModels
 {

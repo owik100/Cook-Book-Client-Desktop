@@ -1,9 +1,7 @@
 ﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
-using Cook_Book_Client_Desktop_Library.API;
-using Cook_Book_Client_Desktop_Library.API.Interfaces;
-using Cook_Book_Client_Desktop_Library.Models;
-using Cook_Book_Client_Desktop_Library.Models.Interfaces;
+using Cook_Book_Shared_Code.API;
+using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
