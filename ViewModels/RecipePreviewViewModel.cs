@@ -20,7 +20,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _recipeName;
         private List<string> _recipeIntegradts;
         private string _recipeInstructions;
-        private string _imagePath;
+        private string _imagePath="";
         private int _recipeId;
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
