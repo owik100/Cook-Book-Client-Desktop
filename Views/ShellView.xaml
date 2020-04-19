@@ -18,6 +18,7 @@
                 <MenuItem x:Name="ExitApplication" Header="E_xit"/>
             </MenuItem>
             <MenuItem Header="_Account" Visibility="{Binding IsLogged, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Collapsed}">
+                <MenuItem IsEnabled="False"  Header="{Binding HelloMesage}"/>
                 <MenuItem x:Name="LogOut" Header="_Log Out"/>
             </MenuItem>
         </Menu>

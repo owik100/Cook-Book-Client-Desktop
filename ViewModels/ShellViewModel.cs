@@ -18,6 +18,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private RecipesViewModel _recipesViewModel;
         private ILoggedUser _loggedUser;
         private IAPIHelper _apiHelper;
+        private string _helloMesage;
 
         public ShellViewModel(IEventAggregator eventAggregator, RecipesViewModel RecipesViewModel,
             ILoggedUser LoggedUser, IAPIHelper APIHelper)
@@ -42,11 +43,26 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 if (string.IsNullOrWhiteSpace(_loggedUser.Token) == false)
                 {
                     output = true;
+                    HelloMesage = _loggedUser.UserName;
                 }
 
                 return output;
             }
         }
+
+       
+
+        public string HelloMesage
+        {
+            get { 
+                return _helloMesage; 
+            }
+            set {
+                _helloMesage = "Witaj " + value;
+                NotifyOfPropertyChange(() => HelloMesage);
+            }
+        }
+
 
         public async Task LogOut()
         {
