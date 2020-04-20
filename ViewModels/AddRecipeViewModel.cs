@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
+using Cook_Book_Client_Desktop.Helpers;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 
@@ -46,7 +47,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _eventAggregator.SubscribeOnPublishedThread(this);
 
             SubmitText = "Dodaj";
-            ImagePath = "pack://application:,,,/Resources/food template.png";
+            ImagePath = ImageConstants.DefaultImage;
         }
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
@@ -199,7 +200,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 bool output = false;
 
-                if (!string.IsNullOrWhiteSpace(ImagePath) && ImagePath != "pack://application:,,,/Resources/food template.png")
+                if (!string.IsNullOrWhiteSpace(ImagePath) && ImagePath != ImageConstants.DefaultImage)
                 {
                     output = true;
                 }
@@ -257,7 +258,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć obrazek?", "Potwierdź usunięcie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    ImagePath = "pack://application:,,,/Resources/food template.png";
+                    ImagePath = ImageConstants.DefaultImage;
                     NotifyOfPropertyChange(() => ImagePath);
                     NotifyOfPropertyChange(() => CanDeleteFileModel);
                 }
@@ -282,7 +283,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     IsPublic = IsPublic,
                 };
 
-                if (recipeModel.NameOfImage == "pack://application:,,,/Resources/food template.png")
+                if (recipeModel.NameOfImage == ImageConstants.DefaultImage)
                 {
                     recipeModel.NameOfImage = "";
                 }
@@ -303,7 +304,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     {
                         if(recipeModel.NameOfImage == "")
                         {
-                            recipeModel.NameOfImage = "pack://application:,,,/Resources/food template.png";
+                            recipeModel.NameOfImage = ImageConstants.DefaultImage;
                         }
 
                         NotifyOfPropertyChange(() => ImagePath);

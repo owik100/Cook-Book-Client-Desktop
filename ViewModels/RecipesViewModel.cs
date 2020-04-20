@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
+using Cook_Book_Client_Desktop.Helpers;
 using Cook_Book_Client_Desktop_Library.Helpers;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
@@ -74,7 +75,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 {
                     if (item.NameOfImage == null)
                     {
-                        item.ImagePath = "pack://application:,,,/Resources/food template.png";
+                        item.ImagePath = ImageConstants.DefaultImage;
                         continue;
                     }
 
