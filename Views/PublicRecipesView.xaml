@@ -1,19 +1,14 @@
-﻿<UserControl x:Class="Cook_Book_Client_Desktop.Views.RecipesView"
+﻿<UserControl x:Class="Cook_Book_Client_Desktop.Views.PublicRecipesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cook_Book_Client_Desktop.Views"
              mc:Ignorable="d"  Background="White" FontSize="14"
-             d:DesignHeight="450" d:DesignWidth="800"        
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:helpers="clr-namespace:Cook_Book_Client_Desktop.Helpers">
-
-
-    <UserControl.Resources>
-        <helpers:BooleanToColorConverter x:Key="BooleanToColorConverter" />
-    </UserControl.Resources>
+             xmlns:helpers="clr-namespace:Cook_Book_Client_Desktop.Helpers"
+             d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
 
@@ -24,28 +19,29 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            
-            <Button Grid.Row="0" 
+
+            <Button x:Name="UserRecipes" Grid.Row="0" 
                     FontSize="35" FontFamily="Segoe UI Light"
                     Margin="10"
-                    IsEnabled="False">
+                   >
                 Twoje przepisy
             </Button>
 
             <Button x:Name="PublicRecipes"
                     Grid.Row="0" 
                     FontSize="35" FontFamily="Segoe UI Light"
-                    Margin="10">
+                    Margin="10"
+                     IsEnabled="False">
                 Odkrywaj przepisy
             </Button>
         </StackPanel>
-       
+
 
 
 
 
         <ScrollViewer x:Name="MyScrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <ListBox x:Name="Recipes" >
+            <ListBox x:Name="Recipes">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="IsSelected" Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}"/>
@@ -65,23 +61,13 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="5" cal:Message.Attach="[Event MouseLeftButtonUp] = [Action RecipePreview($dataContext)]" Cursor="Hand"  
-                                 CornerRadius="10" BorderBrush="{Binding IsPublic, Converter={StaticResource BooleanToColorConverter},FallbackValue=Collapsed}" BorderThickness="5" DockPanel.Dock="Top">
-                            <StackPanel  Orientation="Vertical" >
-                                <Image Margin="0 2 0 0" Height="100" Width="175" Source="{Binding ImagePath}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch"  ></Image>
-                                <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left"  Text="{Binding Name}"/>
-                            </StackPanel>
-                        </Border>
+                        <StackPanel  cal:Message.Attach="[Event MouseLeftButtonUp] = [Action RecipePreview($dataContext)]" Cursor="Hand" Orientation="Vertical" >
+                            <Image Margin="0 2 0 0" Height="100" Width="175" Source="{Binding ImagePath}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch"  ></Image>
+                            <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left"  Text="{Binding Name}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </ScrollViewer>
-        
-        <DockPanel Grid.Row="2">
-            <Button x:Name="AddRecipe" DockPanel.Dock="Bottom"  Margin="10" FontSize="36">
-                Dodaj nowy przepis!
-            </Button>
-        </DockPanel>
-
     </Grid>
 </UserControl>

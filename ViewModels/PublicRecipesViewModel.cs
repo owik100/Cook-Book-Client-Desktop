@@ -1,43 +1,39 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Client_Desktop.Helpers;
 using Cook_Book_Client_Desktop_Library.Helpers;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Imaging;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
-    public class RecipesViewModel : Screen, IHandle<ReloadAllRecipes>
+   public class PublicRecipesViewModel : Screen, IHandle<ReloadPublicRecipes>
     {
         private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private BindingList<RecipeModel> _recipes;
-        private IEventAggregator _eventAggregator;
-
         List<RecipeModel> tempRecipes = new List<RecipeModel>();
 
-        public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
+        private IEventAggregator _eventAggregator;
+        public PublicRecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
             _eventAggregator = EventAggregator;
             _eventAggregator.SubscribeOnPublishedThread(this);
         }
 
-        public async Task HandleAsync(ReloadAllRecipes message, CancellationToken cancellationToken)
+        public async Task HandleAsync(ReloadPublicRecipes message, CancellationToken cancellationToken)
         {
-           if(message!=null)
-            {
-                await LoadRecipes();
-                await LoadImages();
-            }
+            await LoadRecipes();
+            await LoadImages();
         }
 
         #region Props
@@ -56,7 +52,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                tempRecipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
+                tempRecipes = await _recipesEndPointAPI.GetPublicRecipes();
             }
             catch (Exception ex)
             {
@@ -88,12 +84,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                     var downloadStatus = await _recipesEndPointAPI.DownloadImage(item.NameOfImage);
 
-                    if(downloadStatus)
+                    if (downloadStatus)
                     {
                         item.ImagePath = TempData.GetImagePath(item.NameOfImage);
                         DontDeletetheseImages.Add(item.NameOfImage);
                     }
-                   
+
                 }
 
                 TempData.DeleteUnusedImages(DontDeletetheseImages);
@@ -108,24 +104,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         }
 
-        public async Task AddRecipe()
+        public async Task UserRecipes()
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new AddRecipeWindowEvent(AddOrEdit.Add), new CancellationToken());
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Got exception", ex);
-                MessageBox.Show(ex.Message, ex.GetType().ToString());
-            }
-        } 
-        
-        public async Task PublicRecipes()
-        {
-            try
-            {
-                await _eventAggregator.PublishOnUIThreadAsync(new ReloadPublicRecipesEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: false), new CancellationToken());
             }
             catch (Exception ex)
             {
@@ -149,7 +132,5 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
 
         }
-
-      
     }
 }
