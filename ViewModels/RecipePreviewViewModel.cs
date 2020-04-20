@@ -22,15 +22,21 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _recipeInstructions;
         private string _imagePath="";
         private int _recipeId;
+        private bool _canEdit;
+        private string _userName;
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IEventAggregator _eventAggregator;
+        private ILoggedUser _loggedUser;
 
-        public RecipePreviewViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
+        public RecipePreviewViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
+            _loggedUser = loggedUser;
             _eventAggregator = EventAggregator;
             _eventAggregator.SubscribeOnPublishedThread(this);
+
+            CanEdit = false;
         }
 
         public async Task HandleAsync(SendRecipe message, CancellationToken cancellationToken)
@@ -45,6 +51,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 RecipeIngredients = (currentRecipe.Ingredients).ToList();
                 RecipeInstructions = currentRecipe.Instruction;
                 ImagePath = currentRecipe.ImagePath;
+                
+                if(!currentRecipe.IsPublic || currentRecipe.UserName == _loggedUser.UserName)
+                {
+                    CanEdit = true;
+                }
+                else
+                {
+                    CanEdit = false;
+                    UserName = "Autor przepisu: " + currentRecipe.UserName;
+                }
 
                 await Task.CompletedTask;
             }
@@ -92,6 +108,26 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _recipeInstructions = value;
                 NotifyOfPropertyChange(() => RecipeInstructions);
+            }
+        }
+
+        public string UserName
+        {
+            get { return _userName; }
+            set
+            {
+                _userName = value;
+                NotifyOfPropertyChange(() => UserName);
+            }
+        }
+
+        public bool CanEdit
+        {
+            get { return _canEdit; }
+            set
+            {
+                _canEdit = value;
+                NotifyOfPropertyChange(() => CanEdit);
             }
         }
         #endregion
