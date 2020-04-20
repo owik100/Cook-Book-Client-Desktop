@@ -23,6 +23,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private IEventAggregator _eventAggregator;
 
         List<RecipeModel> tempRecipes = new List<RecipeModel>();
+        private bool _isPublicRecipes;
+        private bool _isUserRecipes;
 
         public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
         {
@@ -35,7 +37,19 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
            if(message!=null)
             {
-                await LoadRecipes();
+                if(message.UserOrPublic == UserOrPublic.User)
+                {
+                    IsPublicRecipes = false;
+                    IsUserRecipes = true;
+                    await LoadUserRecipes();
+                }
+                else
+                {
+                    IsPublicRecipes = true;
+                    IsUserRecipes = false;
+                    await LoadPublicRecipes();
+                }
+               
                 await LoadImages();
             }
         }
@@ -49,14 +63,45 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _recipes = value;
                 NotifyOfPropertyChange(() => Recipes);
             }
+        } 
+        public bool IsPublicRecipes
+        {
+            get { return _isPublicRecipes; }
+            set
+            {
+                _isPublicRecipes = value;
+                NotifyOfPropertyChange(() => IsPublicRecipes);
+            }
+        }
+        public bool IsUserRecipes
+        {
+            get { return _isUserRecipes; }
+            set
+            {
+                _isUserRecipes = value;
+                NotifyOfPropertyChange(() => IsUserRecipes);
+            }
         }
         #endregion
 
-        private async Task LoadRecipes()
+        private async Task LoadUserRecipes()
         {
             try
             {
                 tempRecipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+        }
+
+        private async Task LoadPublicRecipes()
+        {
+            try
+            {
+                tempRecipes = await _recipesEndPointAPI.GetPublicRecipes();
             }
             catch (Exception ex)
             {
@@ -125,7 +170,20 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new ReloadPublicRecipesEvent(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(UserOrPublic.Public), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+        }
+
+        public async Task UserRecipes()
+        {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(UserOrPublic.User), new CancellationToken());
             }
             catch (Exception ex)
             {

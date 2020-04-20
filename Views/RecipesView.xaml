@@ -24,18 +24,19 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            
-            <Button Grid.Row="0" 
+
+            <Button x:Name="UserRecipes" Grid.Row="0" 
                     FontSize="35" FontFamily="Segoe UI Light"
                     Margin="10"
-                    IsEnabled="False">
+                    IsEnabled="{Binding IsPublicRecipes}">
                 Twoje przepisy
             </Button>
 
             <Button x:Name="PublicRecipes"
                     Grid.Row="0" 
                     FontSize="35" FontFamily="Segoe UI Light"
-                    Margin="10">
+                    Margin="10"
+                    IsEnabled="{Binding IsUserRecipes}">
                 Odkrywaj przepisy
             </Button>
         </StackPanel>

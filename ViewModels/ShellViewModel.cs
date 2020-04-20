@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Cook_Book_Client_Desktop.ViewModels
 {
     public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>, IHandle<AddRecipeWindowEvent>,
-        IHandle<RegisterWindowEvent>, IHandle<LoginWindowEvent>, IHandle<RecipePreviewEvent>, IHandle<ReloadPublicRecipesEvent>
+        IHandle<RegisterWindowEvent>, IHandle<LoginWindowEvent>, IHandle<RecipePreviewEvent>
     {
         private IEventAggregator _eventAggregator;
         private RecipesViewModel _recipesViewModel;
@@ -90,7 +90,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             if (message.ReloadNeeded == true)
             {
                 await ActivateItemAsync(_recipesViewModel, cancellationToken);
-                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(UserOrPublic.User), new CancellationToken());
             }
             else
             {
@@ -98,13 +98,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
 
             NotifyOfPropertyChange(() => IsLogged);
-        }
-
-        public async Task HandleAsync(ReloadPublicRecipesEvent message, CancellationToken cancellationToken)
-        {
-            //Uruchom okno z nowa instancja
-            await ActivateItemAsync(IoC.Get<PublicRecipesViewModel>(), new CancellationToken());
-            await _eventAggregator.PublishOnUIThreadAsync(new ReloadPublicRecipes(), new CancellationToken());
         }
 
         public async Task HandleAsync(RegisterWindowEvent message, CancellationToken cancellationToken)
