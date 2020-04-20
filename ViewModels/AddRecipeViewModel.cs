@@ -28,6 +28,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _ingredientInsert;
         private string _recipeInstructions;
         private string _image;
+        private bool _isPublic;
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IEventAggregator _eventAggregator;
@@ -62,6 +63,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     RecipeIngredients = new BindingList<string>(message.RecipeModel.Ingredients.ToList());
                     RecipeInstructions = message.RecipeModel.Instruction;
                     ImagePath = message.RecipeModel.ImagePath;
+                    IsPublic = message.RecipeModel.IsPublic;
                 }
 
                 await Task.CompletedTask;
@@ -146,6 +148,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _ingredientInsert = value;
                 NotifyOfPropertyChange(() => IngredientInsert);
                 NotifyOfPropertyChange(() => CanAddIngredientTextBox);
+            }
+        } 
+        
+        public bool IsPublic
+        {
+            get { return _isPublic; }
+            set
+            {
+                _isPublic = value;
+                NotifyOfPropertyChange(() => IsPublic);
             }
         }
 
@@ -266,7 +278,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     Name = RecipeName,
                     Ingredients = RecipeIngredients.ToList(),
                     Instruction = RecipeInstructions,
-                    NameOfImage = ImagePath
+                    NameOfImage = ImagePath,
+                    IsPublic = IsPublic,
                 };
 
                 if (recipeModel.NameOfImage == "pack://application:,,,/Resources/food template.png")

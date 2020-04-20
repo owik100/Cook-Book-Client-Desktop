@@ -55,7 +55,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                tempRecipes = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
+                tempRecipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
             }
             catch (Exception ex)
             {
