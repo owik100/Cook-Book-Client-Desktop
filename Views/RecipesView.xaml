@@ -69,7 +69,7 @@
                         <Border Margin="5" cal:Message.Attach="[Event MouseLeftButtonUp] = [Action RecipePreview($dataContext)]" Cursor="Hand"  
                                  CornerRadius="10" BorderBrush="{Binding DisplayAsPublic, Converter={StaticResource BooleanToColorConverter},FallbackValue=Collapsed}" BorderThickness="5" DockPanel.Dock="Top">
                             <StackPanel  Orientation="Vertical" >
-                                <Image isi Margin="0 2 0 0" Height="100" Width="175" Source="{Binding ImagePath}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch"  ></Image>
+                                <Image Margin="0 2 0 0" Height="100" Width="175" Source="{Binding ImagePath}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch"  ></Image>
                                 <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left"  Text="{Binding Name}"/>
                             </StackPanel>
                         </Border>
