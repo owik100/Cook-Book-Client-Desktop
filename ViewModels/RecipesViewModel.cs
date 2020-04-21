@@ -273,8 +273,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
-        }
-
-      
+        }   
     }
 }
