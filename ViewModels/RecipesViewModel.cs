@@ -19,16 +19,18 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
-        private BindingList<RecipeModel> _recipes;
+        private BindingList<RecipeModelDisplay> _recipes;
         private IEventAggregator _eventAggregator;
+        private ILoggedUser _loggedUser;
 
-        List<RecipeModel> tempRecipes = new List<RecipeModel>();
+        List<RecipeModelDisplay> tempRecipes = new List<RecipeModelDisplay>();
         private bool _isPublicRecipes;
         private bool _isUserRecipes;
 
-        public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, IEventAggregator EventAggregator)
+        public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
+            _loggedUser = loggedUser;
             _eventAggregator = EventAggregator;
             _eventAggregator.SubscribeOnPublishedThread(this);
         }
@@ -55,7 +57,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         }
 
         #region Props
-        public BindingList<RecipeModel> Recipes
+        public BindingList<RecipeModelDisplay> Recipes
         {
             get { return _recipes; }
             set
@@ -88,7 +90,33 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                tempRecipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
+                tempRecipes.Clear();
+                var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
+
+                foreach (var item in recipes)
+                {
+                    bool displayAsPublic = false;
+                    if (item.IsPublic && _loggedUser.UserName == item.UserName)
+                    {
+                        displayAsPublic = true;
+                    }
+
+
+                    tempRecipes.Add(new RecipeModelDisplay
+                    {
+                        UserName = item.UserName,
+                        Ingredients = item.Ingredients,
+                        Instruction = item.Instruction,
+                        Name = item.Name,
+                        NameOfImage = item.NameOfImage,
+                        UserId = item.UserId,
+                        IsPublic = item.IsPublic,
+                        RecipeId = item.RecipeId,
+                        ImagePath = item.ImagePath,
+
+                        DisplayAsPublic = displayAsPublic
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -101,7 +129,34 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                tempRecipes = await _recipesEndPointAPI.GetPublicRecipes();
+                tempRecipes.Clear();
+                var recipes = await _recipesEndPointAPI.GetPublicRecipes();
+
+                foreach (var item in recipes)
+                {
+                    bool displayAsPublic = false;
+                    if (item.IsPublic && _loggedUser.UserName == item.UserName)
+                    {
+                        displayAsPublic = true;
+                    }
+
+
+                    tempRecipes.Add(new RecipeModelDisplay
+                    {
+                        UserName = item.UserName,
+                        Ingredients = item.Ingredients,
+                        Instruction = item.Instruction,
+                        Name = item.Name,
+                        NameOfImage = item.NameOfImage,
+                        UserId = item.UserId,
+                        IsPublic = item.IsPublic,
+                        RecipeId = item.RecipeId,
+                        ImagePath = item.ImagePath,
+
+                        DisplayAsPublic = displayAsPublic
+                    });
+                }
+
             }
             catch (Exception ex)
             {
@@ -143,7 +198,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                 TempData.DeleteUnusedImages(DontDeletetheseImages);
 
-                Recipes = new BindingList<RecipeModel>(tempRecipes);
+                Recipes = new BindingList<RecipeModelDisplay>(tempRecipes);
             }
             catch (Exception ex)
             {
@@ -194,11 +249,23 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
 
 
-        public async Task RecipePreview(RecipeModel model)
+        public async Task RecipePreview(RecipeModelDisplay model)
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new RecipePreviewEvent(model), new CancellationToken());
+                RecipeModel recipeModel = new RecipeModel
+                {
+                    ImagePath = model.ImagePath,
+                    Ingredients = model.Ingredients,
+                    Instruction = model.Instruction,
+                    UserId = model.UserId,
+                    RecipeId = model.RecipeId,
+                    IsPublic = model.IsPublic,
+                    Name = model.Name,
+                    NameOfImage = model.NameOfImage,
+                    UserName = model.UserName,
+                };
+                await _eventAggregator.PublishOnUIThreadAsync(new RecipePreviewEvent(recipeModel), new CancellationToken());
             }
             catch (Exception ex)
             {
