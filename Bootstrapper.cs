@@ -31,7 +31,7 @@ namespace Cook_Book_Client_Desktop
         protected override void Configure()
         {
             _container.Instance(_container)
-                .PerRequest<IRecipesEndPointAPI,RecipesEndPointAPI>();
+                .PerRequest<IRecipesEndPointAPI, RecipesEndPointAPI>();
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
@@ -55,10 +55,10 @@ namespace Cook_Book_Client_Desktop
 
 
             _container.RegisterInstance(
-       typeof(IMapper),
-       "automapper",
-       mappingConfig.CreateMapper()
-   );
+            typeof(IMapper),
+            "automapper",
+             mappingConfig.CreateMapper()
+            );
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
