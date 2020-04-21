@@ -45,7 +45,6 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 currentRecipe = message.RecipeModel;
 
-                //TODO Mapper
                 _recipeId = currentRecipe.RecipeId;
                 RecipeName = currentRecipe.Name;
                 RecipeIngredients = (currentRecipe.Ingredients).ToList();

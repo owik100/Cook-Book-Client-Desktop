@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using Cook_Book_Client_Desktop.ViewModels;
 using Cook_Book_Client_Desktop_Library.API;
 using Cook_Book_Shared_Code.API;
@@ -44,6 +45,20 @@ namespace Cook_Book_Client_Desktop
                 .ToList()
                 .ForEach(viewModelType => _container.RegisterPerRequest(
                     viewModelType, viewModelType.ToString(), viewModelType));
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+
+
+            _container.RegisterInstance(
+       typeof(IMapper),
+       "automapper",
+       mappingConfig.CreateMapper()
+   );
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
