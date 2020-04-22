@@ -24,6 +24,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private int _recipeId;
         private bool _canEdit;
         private string _userName;
+        private bool _displayUserName;
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IEventAggregator _eventAggregator;
@@ -54,10 +55,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 if(!currentRecipe.IsPublic || currentRecipe.UserName == _loggedUser.UserName)
                 {
                     CanEdit = true;
+                    DisplayUserName = false;
                 }
                 else
                 {
                     CanEdit = false;
+                    DisplayUserName = true;
                     UserName = "Autor przepisu: " + currentRecipe.UserName;
                 }
 
@@ -127,6 +130,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _canEdit = value;
                 NotifyOfPropertyChange(() => CanEdit);
+            }
+        } 
+        public bool DisplayUserName
+        {
+            get { return _displayUserName; }
+            set
+            {
+                _displayUserName = value;
+                NotifyOfPropertyChange(() => DisplayUserName);
             }
         }
         #endregion
