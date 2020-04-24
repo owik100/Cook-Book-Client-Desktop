@@ -81,14 +81,11 @@
 
 
         <DockPanel Grid.Row="2">
-            <TextBlock Text="{Binding PageInfo}"></TextBlock>
-            <StackPanel>
-                <Button x:Name="RecipesBack" DockPanel.Dock="Bottom"  Margin="10" FontSize="12">
-                    Poprzednia strona
-                </Button>
-                <Button x:Name="RecipesNext" DockPanel.Dock="Bottom"  Margin="10" FontSize="12">
-                    Następna strona
-                </Button>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="RecipesBack" IsEnabled="{Binding CanPrevious}"  Margin="10" FontSize="12" Content="&lt;="/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding PageInfo}"/>
+                <Button x:Name="RecipesNext" IsEnabled="{Binding CanNext}"  Margin="10" FontSize="12" Content="=&gt;"/>
+
             </StackPanel>
             
         </DockPanel>

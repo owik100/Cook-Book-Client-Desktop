@@ -29,6 +29,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         List<RecipeModelDisplay> tempRecipes = new List<RecipeModelDisplay>();
         private bool _isPublicRecipes;
         private bool _isUserRecipes;
+        private bool _canNext;
+        private bool _canPrevious;
 
         private int pageSize = 10;
         private int totalPages = 1;
@@ -93,6 +95,24 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _isUserRecipes = value;
                 NotifyOfPropertyChange(() => IsUserRecipes);
             }
+        }   
+        public bool CanNext
+        {
+            get { return _canNext; }
+            set
+            {
+                _canNext = value;
+                NotifyOfPropertyChange(() => CanNext);
+            }
+        }
+        public bool CanPrevious
+        {
+            get { return _canPrevious; }
+            set
+            {
+                _canPrevious = value;
+                NotifyOfPropertyChange(() => CanPrevious);
+            }
         }
         public string PageInfo
         {
@@ -115,6 +135,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 totalPages = recipes.FirstOrDefault().TotalPages;
                 PageInfo = pageNumber.ToString();
 
+                NavigationButtonsActiveDeactive(pageNumber);
+
                 RecipeModelsToRecipeModelDisplay(recipes);
 
                 await LoadImages();
@@ -135,6 +157,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                 totalPages = recipes.FirstOrDefault().TotalPages;
                 PageInfo = pageNumber.ToString();
+
+                NavigationButtonsActiveDeactive(pageNumber);
 
                 RecipeModelsToRecipeModelDisplay(recipes);
 
@@ -294,6 +318,27 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 await LoadPublicRecipes(pageSize, ++pageNumberPublicRecipes);
             }
 
+        }
+
+        private void NavigationButtonsActiveDeactive(int pageNumber)
+        {
+            if (pageNumber <= 1)
+            {
+                CanPrevious = false;
+            }
+            else
+            {
+                CanPrevious = true;
+            }
+
+            if (pageNumber >= totalPages)
+            {
+                CanNext = false;
+            }
+            else
+            {
+                CanNext = true;
+            }
         }
     }
 }
