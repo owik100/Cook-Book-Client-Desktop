@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Linq;
 using System.Windows.Media.Imaging;
 
 namespace Cook_Book_Client_Desktop.ViewModels
@@ -29,6 +30,13 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private bool _isPublicRecipes;
         private bool _isUserRecipes;
 
+        private int pageSize = 10;
+        private int totalPages = 1;
+        private int pageNumberUserRecipes = 1;
+        private int pageNumberPublicRecipes = 1;
+
+        private string _pageInfo;
+
         public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator, IMapper mapper)
         {
             _mapper = mapper;
@@ -42,20 +50,19 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
            if(message!=null)
             {
-                if(message.UserOrPublic == UserOrPublic.User)
+
+                if (message.UserOrPublic == UserOrPublic.User)
                 {
                     IsPublicRecipes = false;
                     IsUserRecipes = true;
-                    await LoadUserRecipes();
+                    await LoadUserRecipes(pageSize, pageNumberUserRecipes);
                 }
                 else
                 {
                     IsPublicRecipes = true;
                     IsUserRecipes = false;
-                    await LoadPublicRecipes();
-                }
-               
-                await LoadImages();
+                    await LoadPublicRecipes(pageSize, pageNumberPublicRecipes);
+                }       
             }
         }
 
@@ -87,16 +94,30 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => IsUserRecipes);
             }
         }
+        public string PageInfo
+        {
+            get { return _pageInfo; }
+            set
+            {
+                _pageInfo = $"Strona {value} z {totalPages}";
+                NotifyOfPropertyChange(() => PageInfo);
+            }
+        }
         #endregion
 
-        private async Task LoadUserRecipes()
+        private async Task LoadUserRecipes(int pageSize, int pageNumber)
         {
             try
             {
                 tempRecipes.Clear();
-                var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
+                var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumber);
+
+                totalPages = recipes.FirstOrDefault().TotalPages;
+                PageInfo = pageNumber.ToString();
 
                 RecipeModelsToRecipeModelDisplay(recipes);
+
+                await LoadImages();
             }
             catch (Exception ex)
             {
@@ -105,14 +126,19 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        private async Task LoadPublicRecipes()
+        private async Task LoadPublicRecipes(int pageSize, int pageNumber)
         {
             try
             {
                 tempRecipes.Clear();
-                var recipes = await _recipesEndPointAPI.GetPublicRecipes();
+                var recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumber);
+
+                totalPages = recipes.FirstOrDefault().TotalPages;
+                PageInfo = pageNumber.ToString();
 
                 RecipeModelsToRecipeModelDisplay(recipes);
+
+                await LoadImages();
             }
             catch (Exception ex)
             {
@@ -244,5 +270,30 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
 
         }   
+
+        public async Task RecipesBack()
+        {
+            if (IsUserRecipes)
+            {
+                await LoadUserRecipes(pageSize, --pageNumberUserRecipes);
+            }
+            else
+            {
+                await LoadPublicRecipes(pageSize, --pageNumberPublicRecipes);
+            }
+        }
+
+        public async Task RecipesNext()
+        {
+            if(IsUserRecipes)
+            {
+                await LoadUserRecipes(pageSize, ++pageNumberUserRecipes);
+            }
+            else
+            {
+                await LoadPublicRecipes(pageSize, ++pageNumberPublicRecipes);
+            }
+
+        }
     }
 }

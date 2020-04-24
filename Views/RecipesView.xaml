@@ -21,6 +21,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -77,8 +78,22 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </ScrollViewer>
-        
+
+
         <DockPanel Grid.Row="2">
+            <TextBlock Text="{Binding PageInfo}"></TextBlock>
+            <StackPanel>
+                <Button x:Name="RecipesBack" DockPanel.Dock="Bottom"  Margin="10" FontSize="12">
+                    Poprzednia strona
+                </Button>
+                <Button x:Name="RecipesNext" DockPanel.Dock="Bottom"  Margin="10" FontSize="12">
+                    Następna strona
+                </Button>
+            </StackPanel>
+            
+        </DockPanel>
+
+        <DockPanel Grid.Row="3">
             <Button x:Name="AddRecipe" DockPanel.Dock="Bottom"  Margin="10" FontSize="36">
                 Dodaj nowy przepis!
             </Button>
