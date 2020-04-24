@@ -50,7 +50,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task HandleAsync(ReloadAllRecipes message, CancellationToken cancellationToken)
         {
-           if(message!=null)
+            if (message != null)
             {
 
                 if (message.UserOrPublic == UserOrPublic.User)
@@ -64,7 +64,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     IsPublicRecipes = true;
                     IsUserRecipes = false;
                     await LoadPublicRecipes(pageSize, pageNumberPublicRecipes);
-                }       
+                }
             }
         }
 
@@ -77,7 +77,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _recipes = value;
                 NotifyOfPropertyChange(() => Recipes);
             }
-        } 
+        }
         public bool IsPublicRecipes
         {
             get { return _isPublicRecipes; }
@@ -95,7 +95,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _isUserRecipes = value;
                 NotifyOfPropertyChange(() => IsUserRecipes);
             }
-        }   
+        }
         public bool CanNext
         {
             get { return _canNext; }
@@ -219,12 +219,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                     var downloadStatus = await _recipesEndPointAPI.DownloadImage(item.NameOfImage);
 
-                    if(downloadStatus)
+                    if (downloadStatus)
                     {
                         item.ImagePath = TempData.GetImagePath(item.NameOfImage);
                         DontDeletetheseImages.Add(item.NameOfImage);
                     }
-                   
+
                 }
 
                 TempData.DeleteUnusedImages(DontDeletetheseImages);
@@ -250,8 +250,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
-        } 
-        
+        }
+
         public async Task PublicRecipes()
         {
             try
@@ -293,7 +293,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
 
-        }   
+        }
 
         public async Task RecipesBack()
         {
@@ -309,7 +309,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public async Task RecipesNext()
         {
-            if(IsUserRecipes)
+            if (IsUserRecipes)
             {
                 await LoadUserRecipes(pageSize, ++pageNumberUserRecipes);
             }
@@ -339,6 +339,22 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 CanNext = true;
             }
+        }
+
+        public void LogOffUser()
+        {
+            IsPublicRecipes = false;
+            IsUserRecipes = true;
+            CanNext = false;
+            CanPrevious = false;
+
+            pageSize = 10;
+            totalPages = 1;
+            pageNumberUserRecipes = 1;
+            pageNumberPublicRecipes = 1;
+
+            tempRecipes.Clear();
+            _recipes.Clear();
         }
     }
 }

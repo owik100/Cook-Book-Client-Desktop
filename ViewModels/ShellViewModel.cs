@@ -68,6 +68,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             _loggedUser.LogOffUser();
             _apiHelper.LogOffUser();
+            _recipesViewModel.LogOffUser();
             NotifyOfPropertyChange(() => IsLogged);
             await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
         }
