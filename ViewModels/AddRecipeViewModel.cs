@@ -312,6 +312,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                         reloadNeeded = true;
                         MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano", MessageBoxButton.OK,MessageBoxImage.Information);
+
+                        await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded), new CancellationToken());
                     }
                 }
             }
