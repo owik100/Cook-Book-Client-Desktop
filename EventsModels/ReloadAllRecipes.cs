@@ -18,6 +18,7 @@ namespace Cook_Book_Client_Desktop.EventsModels
     public enum UserOrPublic
     {
         User,
-        Public
+        Public,
+        Favourites
     }
 }

@@ -27,7 +27,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
             <Button x:Name="UserRecipes" Grid.Row="0" 
-                    FontSize="35" FontFamily="Segoe UI Light"
+                    FontSize="28" FontFamily="Segoe UI Light"
                     Margin="10"
                     IsEnabled="{Binding IsPublicRecipes}">
                 Twoje przepisy
@@ -35,10 +35,18 @@
 
             <Button x:Name="PublicRecipes"
                     Grid.Row="0" 
-                    FontSize="35" FontFamily="Segoe UI Light"
+                    FontSize="28" FontFamily="Segoe UI Light"
                     Margin="10"
                     IsEnabled="{Binding IsUserRecipes}">
                 Odkrywaj przepisy
+            </Button>
+
+            <Button x:Name="FavouriteRecipes"
+                    Grid.Row="0" 
+                    FontSize="28" FontFamily="Segoe UI Light"
+                    Margin="10"
+                    IsEnabled="{Binding IsPublicRecipes}">
+                Ulubione przepisy
             </Button>
         </StackPanel>
        

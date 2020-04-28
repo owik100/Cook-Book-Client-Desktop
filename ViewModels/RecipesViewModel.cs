@@ -29,6 +29,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         List<RecipeModelDisplay> tempRecipes = new List<RecipeModelDisplay>();
         private bool _isPublicRecipes;
         private bool _isUserRecipes;
+        private bool _isFavouriteRecipes;
         private bool _canNext;
         private bool _canPrevious;
 
@@ -57,13 +58,22 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 {
                     IsPublicRecipes = false;
                     IsUserRecipes = true;
+                    IsFavouriteRecipes = false;
                     await LoadUserRecipes(pageSize, pageNumberUserRecipes);
                 }
-                else
+                else if(message.UserOrPublic == UserOrPublic.Public)
                 {
                     IsPublicRecipes = true;
                     IsUserRecipes = false;
+                    IsFavouriteRecipes = false;
                     await LoadPublicRecipes(pageSize, pageNumberPublicRecipes);
+                }
+                else if(message.UserOrPublic == UserOrPublic.Favourites)
+                {
+                    IsPublicRecipes = false;
+                    IsUserRecipes = false;
+                    IsFavouriteRecipes = true;
+                    await LoadFavouritesRecipes(pageSize, pageNumberPublicRecipes);
                 }
             }
         }
@@ -94,6 +104,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _isUserRecipes = value;
                 NotifyOfPropertyChange(() => IsUserRecipes);
+            }
+        }
+        public bool IsFavouriteRecipes
+        {
+            get { return _isFavouriteRecipes; }
+            set
+            {
+                _isFavouriteRecipes = value;
+                NotifyOfPropertyChange(() => IsFavouriteRecipes);
             }
         }
         public bool CanNext
@@ -154,6 +173,29 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 tempRecipes.Clear();
                 var recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumber);
+
+                totalPages = recipes.FirstOrDefault().TotalPages;
+                PageInfo = pageNumber.ToString();
+
+                NavigationButtonsActiveDeactive(pageNumber);
+
+                RecipeModelsToRecipeModelDisplay(recipes);
+
+                await LoadImages();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+        }
+
+        private async Task LoadFavouritesRecipes(int pageSize, int pageNumber)
+        {
+            try
+            {
+                tempRecipes.Clear();
+                var recipes = await _recipesEndPointAPI.GetFavouritesRecipes(pageSize, pageNumber);
 
                 totalPages = recipes.FirstOrDefault().TotalPages;
                 PageInfo = pageNumber.ToString();
@@ -270,6 +312,19 @@ namespace Cook_Book_Client_Desktop.ViewModels
             try
             {
                 await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(UserOrPublic.User), new CancellationToken());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+        }  
+        
+        public async Task FavouriteRecipes()
+        {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(UserOrPublic.Favourites), new CancellationToken());
             }
             catch (Exception ex)
             {
