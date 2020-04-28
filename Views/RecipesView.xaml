@@ -29,7 +29,7 @@
             <Button x:Name="UserRecipes" Grid.Row="0" 
                     FontSize="28" FontFamily="Segoe UI Light"
                     Margin="10"
-                    IsEnabled="{Binding IsPublicRecipes}">
+                    IsEnabled="{Binding CanUserRecipes}">
                 Twoje przepisy
             </Button>
 
@@ -37,7 +37,7 @@
                     Grid.Row="0" 
                     FontSize="28" FontFamily="Segoe UI Light"
                     Margin="10"
-                    IsEnabled="{Binding IsUserRecipes}">
+                    IsEnabled="{Binding CanPublicRecipes}">
                 Odkrywaj przepisy
             </Button>
 
@@ -45,7 +45,7 @@
                     Grid.Row="0" 
                     FontSize="28" FontFamily="Segoe UI Light"
                     Margin="10"
-                    IsEnabled="{Binding IsPublicRecipes}">
+                    IsEnabled="{Binding CanFavouriteRecipes}">
                 Ulubione przepisy
             </Button>
         </StackPanel>

@@ -6,16 +6,16 @@ namespace Cook_Book_Client_Desktop.EventsModels
 {
     public class ReloadAllRecipes
     {
-        public ReloadAllRecipes(UserOrPublic userOrPublic)
+        public ReloadAllRecipes(userOrPublicOrFavourites userOrPublic)
         {
-            UserOrPublic = userOrPublic;
+            userOrPublicOrFavourites = userOrPublic;
         }
-        public UserOrPublic UserOrPublic { get; set; }
+        public userOrPublicOrFavourites userOrPublicOrFavourites { get; set; }
     }
 
    
 
-    public enum UserOrPublic
+    public enum userOrPublicOrFavourites
     {
         User,
         Public,
