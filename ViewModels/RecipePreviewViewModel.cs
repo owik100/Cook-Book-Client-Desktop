@@ -26,14 +26,22 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _userName;
         private bool _displayUserName;
 
+        private string _favouritesText;
+        private bool _canAddDeleteFavourites;
+        private AddOrdDeleteFromFavourites _AddOrdDeleteFavourites;
+
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IEventAggregator _eventAggregator;
         private ILoggedUser _loggedUser;
+        private IAPIHelper _aPIHelper;
 
-        public RecipePreviewViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator)
+        private bool _reloadNeeded = false;
+
+        public RecipePreviewViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator, IAPIHelper aPIHelper)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
             _loggedUser = loggedUser;
+            _aPIHelper = aPIHelper;
             _eventAggregator = EventAggregator;
             _eventAggregator.SubscribeOnPublishedThread(this);
 
@@ -56,12 +64,25 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 {
                     CanEdit = true;
                     DisplayUserName = false;
+                    CanAddDeleteFavourites = false;
                 }
                 else
                 {
                     CanEdit = false;
                     DisplayUserName = true;
                     UserName = "Autor przepisu: " + currentRecipe.UserName;
+                    CanAddDeleteFavourites = true;
+
+                    if(AlreadyFavourites())
+                    {
+                        _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Delete;
+                        FavouritesText = "Usuń z ulubionych";
+                    }
+                    else
+                    {
+                        _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Add;
+                        FavouritesText = "Dodaj do ulubionych";
+                    }
                 }
 
                 await Task.CompletedTask;
@@ -121,6 +142,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _userName = value;
                 NotifyOfPropertyChange(() => UserName);
             }
+        } 
+        public string FavouritesText
+        {
+            get { return _favouritesText; }
+            set
+            {
+                _favouritesText = value;
+                NotifyOfPropertyChange(() => FavouritesText);
+            }
         }
 
         public bool CanEdit
@@ -141,6 +171,17 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => DisplayUserName);
             }
         }
+           public bool CanAddDeleteFavourites
+        {
+            get { return _canAddDeleteFavourites; }
+            set
+            {
+                _canAddDeleteFavourites = value;
+                NotifyOfPropertyChange(() => CanAddDeleteFavourites);
+            }
+        }
+
+
         #endregion
 
 
@@ -148,7 +189,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: false), new CancellationToken());
+                if(_AddOrdDeleteFavourites == AddOrdDeleteFromFavourites.Add)
+                {
+                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: _reloadNeeded, userOrPublicOrFavourites.Public), new CancellationToken());
+                }
+                else
+                {
+                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: _reloadNeeded, userOrPublicOrFavourites.Favourites), new CancellationToken());
+                }
+                
             }
             catch (Exception ex)
             {
@@ -189,5 +238,65 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
         }
+
+        public async Task AddToFavourites()
+        {
+            try
+            {
+                if(_AddOrdDeleteFavourites == AddOrdDeleteFromFavourites.Add)
+                {
+                    _loggedUser.FavouriteRecipes.Add(_recipeId.ToString());
+                }
+                else
+                {
+                    _loggedUser.FavouriteRecipes.Remove(_recipeId.ToString());
+                }
+
+                LoggedUser loggedUser = new LoggedUser
+                {
+                    Id = _loggedUser.Id,
+                    Email = _loggedUser.Email,
+                    UserName = _loggedUser.UserName,
+                    FavouriteRecipes = _loggedUser.FavouriteRecipes
+                };
+
+                 var result = await _aPIHelper.EditUser(loggedUser);
+
+                _reloadNeeded = true;
+
+                await Back();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+        }
+
+        private bool AlreadyFavourites()
+        {
+           bool output = false;
+
+            try
+            {
+                if(_loggedUser.FavouriteRecipes.Contains(_recipeId.ToString()))
+                {
+                    output = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Got exception", ex);
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+
+            return output;
+        }
+    }
+
+    public enum AddOrdDeleteFromFavourites
+    {
+        Add,
+        Delete
     }
 }

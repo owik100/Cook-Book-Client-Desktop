@@ -91,7 +91,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             if (message.ReloadNeeded == true)
             {
                 await ActivateItemAsync(_recipesViewModel, cancellationToken);
-                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(userOrPublicOrFavourites.User), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new ReloadAllRecipes(message.UserOrPublicOrFavourites), new CancellationToken());
             }
             else
             {
