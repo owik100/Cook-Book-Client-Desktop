@@ -115,7 +115,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         public async Task HandleAsync(RecipePreviewEvent message, CancellationToken cancellationToken)
         {
             await ActivateItemAsync(IoC.Get<RecipePreviewViewModel>(), new CancellationToken());
-            await _eventAggregator.PublishOnUIThreadAsync(new SendRecipe(message.RecipeModel), new CancellationToken());
+            await _eventAggregator.PublishOnUIThreadAsync(new SendRecipe(message.RecipeModel, message.BackTo), new CancellationToken());
         }
 
         public void ExitApplication()

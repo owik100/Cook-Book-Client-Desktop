@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
+using Cook_Book_Client_Desktop.Helpers;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
@@ -26,7 +27,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _userName;
         private bool _displayUserName;
 
-        private string _favouritesText;
+        private string _favouritesImage;
         private bool _canAddDeleteFavourites;
         private AddOrdDeleteFromFavourites _AddOrdDeleteFavourites;
 
@@ -36,6 +37,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private IAPIHelper _aPIHelper;
 
         private bool _reloadNeeded = false;
+        private userOrPublicOrFavourites backTo = userOrPublicOrFavourites.User;
 
         public RecipePreviewViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator, IAPIHelper aPIHelper)
         {
@@ -52,6 +54,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
+                backTo = message.BackTo;
+
                 currentRecipe = message.RecipeModel;
 
                 _recipeId = currentRecipe.RecipeId;
@@ -76,12 +80,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     if(AlreadyFavourites())
                     {
                         _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Delete;
-                        FavouritesText = "Usuń z ulubionych";
+                        FavouritesImage = ImageConstants.StarFull;
                     }
                     else
                     {
                         _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Add;
-                        FavouritesText = "Dodaj do ulubionych";
+                        FavouritesImage = ImageConstants.StarEmpty;
                     }
                 }
 
@@ -143,13 +147,13 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => UserName);
             }
         } 
-        public string FavouritesText
+        public string FavouritesImage
         {
-            get { return _favouritesText; }
+            get { return _favouritesImage; }
             set
             {
-                _favouritesText = value;
-                NotifyOfPropertyChange(() => FavouritesText);
+                _favouritesImage = value;
+                NotifyOfPropertyChange(() => FavouritesImage);
             }
         }
 
@@ -189,15 +193,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                if(_AddOrdDeleteFavourites == AddOrdDeleteFromFavourites.Add)
-                {
-                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: _reloadNeeded, userOrPublicOrFavourites.Public), new CancellationToken());
-                }
-                else
-                {
-                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: _reloadNeeded, userOrPublicOrFavourites.Favourites), new CancellationToken());
-                }
-                
+                await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: _reloadNeeded, backTo), new CancellationToken());
             }
             catch (Exception ex)
             {
@@ -239,7 +235,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-        public async Task AddToFavourites()
+        public async Task AddOrDeleteFavourites()
         {
             try
             {

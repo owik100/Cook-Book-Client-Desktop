@@ -56,6 +56,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             if (message != null)
             {
+                nowOpen = message.userOrPublicOrFavourites;
 
                 if (message.userOrPublicOrFavourites == userOrPublicOrFavourites.User)
                 {
@@ -77,8 +78,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     CanUserRecipes = true;
                     CanFavouriteRecipes = false;
                     await LoadRecipes(message.userOrPublicOrFavourites, pageSize, pageNumberFavouritesRecipes);
-                }
-                nowOpen = message.userOrPublicOrFavourites;
+                }           
             }
         }
 
@@ -168,7 +168,15 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     recipes = await _recipesEndPointAPI.GetFavouritesRecipes(pageSize, pageNumber);
                 }
 
-                totalPages = recipes.FirstOrDefault().TotalPages;
+                if(recipes.Count>0)
+                {
+                    totalPages = recipes.FirstOrDefault().TotalPages;
+                }
+                else
+                {
+                    totalPages = 1;
+                }
+               
                 PageInfo = pageNumber.ToString();
 
                 NavigationButtonsActiveDeactive(pageNumber);
@@ -193,11 +201,18 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     RecipeModelDisplay recipeModelDisplaySingle = _mapper.Map<RecipeModelDisplay>(item);
 
                     bool displayAsPublic = false;
-                    if (item.IsPublic && _loggedUser.UserName == item.UserName)
+                    if (item.IsPublic && _loggedUser.UserName == item.UserName && (nowOpen == userOrPublicOrFavourites.Public || nowOpen == userOrPublicOrFavourites.User))
                     {
                         displayAsPublic = true;
                     }
                     recipeModelDisplaySingle.DisplayAsPublic = displayAsPublic;
+
+                    bool displayAsFavourites = false;
+                    if (_loggedUser.FavouriteRecipes.Contains(item.RecipeId.ToString()) && nowOpen == userOrPublicOrFavourites.Public)
+                    {
+                        displayAsFavourites = true;
+                    }
+                    recipeModelDisplaySingle.DisplayAsFavourites = displayAsFavourites;
 
                     tempRecipes.Add(recipeModelDisplaySingle);
                 }
@@ -311,7 +326,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             try
             {
                 RecipeModel recipeModel = _mapper.Map<RecipeModel>(model);
-                await _eventAggregator.PublishOnUIThreadAsync(new RecipePreviewEvent(recipeModel), new CancellationToken());
+                await _eventAggregator.PublishOnUIThreadAsync(new RecipePreviewEvent(recipeModel, nowOpen), new CancellationToken());
             }
             catch (Exception ex)
             {

@@ -4,11 +4,13 @@ namespace Cook_Book_Client_Desktop.EventsModels
 {
     public class SendRecipe
     {
-        public SendRecipe(RecipeModel recipeModel)
+        public SendRecipe(RecipeModel recipeModel, userOrPublicOrFavourites backTo = userOrPublicOrFavourites.User)
         {
             RecipeModel = recipeModel;
+            BackTo = backTo;
         }
 
         public RecipeModel RecipeModel { get; private set; }
+        public userOrPublicOrFavourites BackTo  { get; private set; }
     }
 }

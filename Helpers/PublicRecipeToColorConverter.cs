@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace Cook_Book_Client_Desktop.Helpers
 {
-   public class BooleanToColorConverter : IValueConverter
+   public class PublicRecipeToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

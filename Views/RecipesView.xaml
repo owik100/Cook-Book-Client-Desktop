@@ -12,7 +12,8 @@
 
 
     <UserControl.Resources>
-        <helpers:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        <helpers:PublicRecipeToColorConverter x:Key="PublicRecipeToColorConverter" />
+        <helpers:FavouritesRecipeToColorConverter x:Key="FavouritesRecipeToColorConverter" />
     </UserControl.Resources>
 
     <Grid>
@@ -27,24 +28,24 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
             <Button x:Name="UserRecipes" Grid.Row="0" 
-                    FontSize="28" FontFamily="Segoe UI Light"
-                    Margin="10"
+                    FontSize="26" FontFamily="Segoe UI Light"
+                    Margin="5"
                     IsEnabled="{Binding CanUserRecipes}">
                 Twoje przepisy
             </Button>
 
             <Button x:Name="PublicRecipes"
                     Grid.Row="0" 
-                    FontSize="28" FontFamily="Segoe UI Light"
-                    Margin="10"
+                    FontSize="26" FontFamily="Segoe UI Light"
+                    Margin="5"
                     IsEnabled="{Binding CanPublicRecipes}">
                 Odkrywaj przepisy
             </Button>
 
             <Button x:Name="FavouriteRecipes"
                     Grid.Row="0" 
-                    FontSize="28" FontFamily="Segoe UI Light"
-                    Margin="10"
+                    FontSize="26" FontFamily="Segoe UI Light"
+                    Margin="5"
                     IsEnabled="{Binding CanFavouriteRecipes}">
                 Ulubione przepisy
             </Button>
@@ -76,11 +77,14 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="5" cal:Message.Attach="[Event MouseLeftButtonUp] = [Action RecipePreview($dataContext)]" Cursor="Hand"  
-                                 CornerRadius="10" BorderBrush="{Binding DisplayAsPublic, Converter={StaticResource BooleanToColorConverter},FallbackValue=Collapsed}" BorderThickness="5" DockPanel.Dock="Top">
-                            <StackPanel  Orientation="Vertical" >
+                                 CornerRadius="10" BorderBrush="{Binding DisplayAsPublic, Converter={StaticResource PublicRecipeToColorConverter}, FallbackValue=Collapsed}" BorderThickness="5" DockPanel.Dock="Top">
+                            <Border Margin="5" cal:Message.Attach="[Event MouseLeftButtonUp] = [Action RecipePreview($dataContext)]" Cursor="Hand"  
+                                 CornerRadius="10" BorderBrush="{Binding DisplayAsFavourites, Converter={StaticResource FavouritesRecipeToColorConverter}, FallbackValue=Collapsed}" BorderThickness="5" DockPanel.Dock="Top">
+                                <StackPanel  Orientation="Vertical" >
                                 <Image Margin="0 2 0 0" Height="100" Width="175" Source="{Binding ImagePath}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch"  ></Image>
                                 <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Left"  Text="{Binding Name}"/>
                             </StackPanel>
+                        </Border>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

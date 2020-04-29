@@ -71,10 +71,13 @@
         <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 10"
                     Text="{Binding UserName}"/>
 
-        <Button x:Name="AddToFavourites" Visibility="{Binding CanAddDeleteFavourites, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="3" Grid.Column="2" Margin="5"
-                Content="{Binding FavouritesText}">
+        <Button x:Name="AddOrDeleteFavourites"  Visibility="{Binding CanAddDeleteFavourites, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="3" Grid.Column="2" Margin="5">
+           
+                <!--<Image Source="{Binding FavouritesImage}" />-->
+            <Image Stretch="Uniform" Source="{Binding FavouritesImage}" />
+      
         </Button>
-
+        
     </Grid>
 
 
