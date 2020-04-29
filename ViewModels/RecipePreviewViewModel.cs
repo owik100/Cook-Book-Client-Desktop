@@ -260,7 +260,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                 _reloadNeeded = true;
 
-                await Back();
+                if (AlreadyFavourites())
+                {
+                    _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Delete;
+                    FavouritesImage = ImageConstants.StarFull;
+                }
+                else
+                {
+                    _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Add;
+                    FavouritesImage = ImageConstants.StarEmpty;
+                }
             }
             catch (Exception ex)
             {
