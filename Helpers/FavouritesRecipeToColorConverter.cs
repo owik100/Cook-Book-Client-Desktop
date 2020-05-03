@@ -14,7 +14,7 @@ namespace Cook_Book_Client_Desktop.Helpers
             if ((bool)value)
             {
                 {
-                    return new SolidColorBrush(Colors.Yellow);
+                    return new SolidColorBrush(Color.FromRgb(255, 217, 0));
                 }
             }
             return new SolidColorBrush(Colors.Transparent);
