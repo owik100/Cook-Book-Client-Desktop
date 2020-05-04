@@ -21,6 +21,9 @@
                 <MenuItem IsEnabled="False"  Header="{Binding HelloMesage}"/>
                 <MenuItem x:Name="LogOut" Header="_Log Out"/>
             </MenuItem>
+            <MenuItem Header="A_bout">
+                <MenuItem x:Name="About" Header="_O programie"/>
+            </MenuItem>
         </Menu>
 
         <Grid>

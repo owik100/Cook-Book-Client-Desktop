@@ -7,14 +7,11 @@
     <StartupObject>Cook_Book_Client_Desktop.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Resources\cook book text logo.png" />
-    <None Remove="Resources\cookbook logo.png" />
     <None Remove="Resources\food template - Copy.png" />
     <None Remove="Resources\food template.png" />
     <None Remove="Resources\starEmpty.png" />
     <None Remove="Resources\starFull.png" />
     <None Remove="Resources\zapiekanka.jpg" />
-    <None Remove="Resources\zapiekanka.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
@@ -27,12 +24,9 @@
     <ProjectReference Include="..\Cook-Book-Client-Desktop-Library\Cook-Book-Client-Desktop-Library.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\cook book text logo.png" />
-    <Resource Include="Resources\cookbook logo.png" />
     <Resource Include="Resources\food template.png" />
     <Resource Include="Resources\starEmpty.png" />
     <Resource Include="Resources\starFull.png" />
-    <Resource Include="Resources\zapiekanka.png" />
   </ItemGroup>
   <ItemGroup>
     <None Update="log4net.config">

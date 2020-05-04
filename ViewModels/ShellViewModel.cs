@@ -71,6 +71,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _recipesViewModel.LogOffUser();
             NotifyOfPropertyChange(() => IsLogged);
             await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+        } 
+        public async Task About()
+        {
+            var windowsManager = new WindowManager();
+            await windowsManager.ShowWindowAsync(new AboutViewModel());
         }
 
         public async Task HandleAsync(AddRecipeWindowEvent message, CancellationToken cancellationToken)
