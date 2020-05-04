@@ -26,5 +26,10 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
         #endregion
+
+        public void GitHub()
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "https://github.com/owik100/Cook-Book");
+        }
     }
 }
