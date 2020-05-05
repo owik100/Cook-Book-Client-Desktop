@@ -35,7 +35,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private bool _canNext;
         private bool _canPrevious;
 
-        private int pageSize = 10;
+        private int pageSize = 30;
         private int totalPages = 1;
         private int pageNumberUserRecipes = 1;
         private int pageNumberPublicRecipes = 1;
@@ -399,7 +399,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             CanNext = false;
             CanPrevious = false;
 
-            pageSize = 10;
+            pageSize = 30;
             totalPages = 1;
             pageNumberUserRecipes = 1;
             pageNumberPublicRecipes = 1;
