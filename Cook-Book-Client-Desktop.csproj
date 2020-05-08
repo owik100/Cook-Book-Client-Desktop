@@ -5,8 +5,11 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>Cook_Book_Client_Desktop</RootNamespace>
     <StartupObject>Cook_Book_Client_Desktop.Program</StartupObject>
+    <ApplicationIcon>Resources\blankicon256.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\blankicon256.ico" />
+    <None Remove="Resources\blankicon256.png" />
     <None Remove="Resources\food template - Copy.png" />
     <None Remove="Resources\food template.png" />
     <None Remove="Resources\starEmpty.png" />
@@ -24,6 +27,8 @@
     <ProjectReference Include="..\Cook-Book-Client-Desktop-Library\Cook-Book-Client-Desktop-Library.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\blankicon256.ico" />
+    <Resource Include="Resources\blankicon256.png" />
     <Resource Include="Resources\food template.png" />
     <Resource Include="Resources\starEmpty.png" />
     <Resource Include="Resources\starFull.png" />

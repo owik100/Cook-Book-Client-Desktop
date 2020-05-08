@@ -8,12 +8,15 @@
              ResizeMode="NoResize"
              WindowStartupLocation="CenterScreen"
              Title="O programie"
-             FontSize="14">
+             FontSize="14"
+             Icon="pack://application:,,,/Resources/blankicon256.png">
     
     
     
     <StackPanel>
         <TextBlock Margin="10" Text="{Binding AppVersion}"/>
+
+        <Image Source="pack://application:,,,/Resources/blankicon256.png" Height="120"/>
 
         <Button Margin="10" x:Name="GitHub">
             GitHub

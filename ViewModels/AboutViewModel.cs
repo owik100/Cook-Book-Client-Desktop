@@ -29,7 +29,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         public void GitHub()
         {
-            System.Diagnostics.Process.Start("explorer.exe", "https://github.com/owik100/Cook-Book");
+            System.Diagnostics.Process.Start("explorer.exe", "https://github.com/owik100/Cook-Book-Client-Desktop");
         }
     }
 }

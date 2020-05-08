@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         Dialog:DialogParticipation.Register="{Binding}"
-        Title="Cook Book" MinHeight="550" MinWidth="750" Height="550" Width="750">
+        Title="Cook Book" MinHeight="550" MinWidth="750" Height="550" Width="750" Icon="pack://application:,,,/Resources/blankicon256.png">
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" FontSize="14">
