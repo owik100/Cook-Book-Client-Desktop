@@ -43,6 +43,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         private string _pageInfo;
 
+        private bool _noRecipes;
+        private bool _noFavouriteRecipes;
+
         public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator, IMapper mapper)
         {
             _mapper = mapper;
@@ -135,6 +138,26 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _canPrevious = value;
                 NotifyOfPropertyChange(() => CanPrevious);
+            }
+        }
+
+        public bool NoRecipes
+        {
+            get { return _noRecipes; }
+            set
+            {
+                _noRecipes = value;
+                NotifyOfPropertyChange(() => NoRecipes);
+            }
+        }
+
+        public bool NoFavouriteRecipes
+        {
+            get { return _noFavouriteRecipes; }
+            set
+            {
+                _noFavouriteRecipes = value;
+                NotifyOfPropertyChange(() => NoFavouriteRecipes);
             }
         }
         public string PageInfo
@@ -263,6 +286,26 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+            finally
+            {
+                if (Recipes.Count <= 0 && nowOpen == userOrPublicOrFavourites.User)
+                {
+                    NoRecipes = true;
+                }
+                else
+                {
+                    NoRecipes = false;
+                }
+
+                if (Recipes.Count <= 0 && nowOpen == userOrPublicOrFavourites.Favourites)
+                {
+                    NoFavouriteRecipes = true;
+                }
+                else
+                {
+                    NoFavouriteRecipes = false;
+                }
             }
 
         }

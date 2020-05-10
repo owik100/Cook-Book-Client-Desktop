@@ -50,9 +50,10 @@
                 Ulubione przepisy
             </Button>
         </StackPanel>
-       
 
 
+        <TextBlock Grid.Row="2" Margin="50,0,0,0" Visibility="{Binding NoRecipes, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">Nie masz żadnych przepisów. Dodaj kilka!</TextBlock>
+        <TextBlock Grid.Row="2" Margin="50,0,0,0" Visibility="{Binding NoFavouriteRecipes, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">Nie masz żadnych ulubionych przepisów. Dodaj jakieś naciskając gwiazdkę!</TextBlock>
 
 
         <ScrollViewer x:Name="MyScrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
