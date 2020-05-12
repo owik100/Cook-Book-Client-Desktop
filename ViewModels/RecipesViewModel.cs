@@ -8,11 +8,10 @@ using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Linq;
-using System.Windows.Media.Imaging;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -71,20 +70,20 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     CanFavouriteRecipes = true;
                     await LoadRecipes(message.userOrPublicOrFavourites, pageSize, pageNumberUserRecipes);
                 }
-                else if(message.userOrPublicOrFavourites == userOrPublicOrFavourites.Public)
+                else if (message.userOrPublicOrFavourites == userOrPublicOrFavourites.Public)
                 {
                     CanPublicRecipes = false;
                     CanUserRecipes = true;
                     CanFavouriteRecipes = true;
                     await LoadRecipes(message.userOrPublicOrFavourites, pageSize, pageNumberPublicRecipes);
                 }
-                else if(message.userOrPublicOrFavourites == userOrPublicOrFavourites.Favourites)
+                else if (message.userOrPublicOrFavourites == userOrPublicOrFavourites.Favourites)
                 {
                     CanPublicRecipes = true;
                     CanUserRecipes = true;
                     CanFavouriteRecipes = false;
                     await LoadRecipes(message.userOrPublicOrFavourites, pageSize, pageNumberFavouritesRecipes);
-                }           
+                }
             }
         }
 
@@ -162,7 +161,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _isLoading = value;
                 NotifyOfPropertyChange(() => IsLoading);
             }
-        } 
+        }
         public bool DisplayRecipes
         {
             get { return _displayRecipes; }
@@ -193,7 +192,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         }
         #endregion
 
-        private async Task LoadRecipes(userOrPublicOrFavourites userOrPublicOrFavourites ,int pageSize, int pageNumber)
+        private async Task LoadRecipes(userOrPublicOrFavourites userOrPublicOrFavourites, int pageSize, int pageNumber)
         {
             try
             {
@@ -203,11 +202,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                 List<RecipeModel> recipes = new List<RecipeModel>();
 
-                if(userOrPublicOrFavourites == userOrPublicOrFavourites.User)
+                if (userOrPublicOrFavourites == userOrPublicOrFavourites.User)
                 {
                     recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumber);
                 }
-                else if(userOrPublicOrFavourites == userOrPublicOrFavourites.Public)
+                else if (userOrPublicOrFavourites == userOrPublicOrFavourites.Public)
                 {
                     recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumber);
                 }
@@ -216,7 +215,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     recipes = await _recipesEndPointAPI.GetFavouritesRecipes(pageSize, pageNumber);
                 }
 
-                if(recipes.Count>0)
+                if (recipes.Count > 0)
                 {
                     totalPages = recipes.FirstOrDefault().TotalPages;
                 }
@@ -224,7 +223,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 {
                     totalPages = 1;
                 }
-               
+
                 PageInfo = pageNumber.ToString();
 
                 NavigationButtonsActiveDeactive(pageNumber);
@@ -377,8 +376,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
-        }  
-        
+        }
+
         public async Task FavouriteRecipes()
         {
             try
@@ -415,11 +414,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 await LoadRecipes(userOrPublicOrFavourites.User, pageSize, --pageNumberUserRecipes);
             }
-            else if(nowOpen == userOrPublicOrFavourites.Public)
+            else if (nowOpen == userOrPublicOrFavourites.Public)
             {
                 await LoadRecipes(userOrPublicOrFavourites.Public, pageSize, --pageNumberPublicRecipes);
             }
-            else if(nowOpen == userOrPublicOrFavourites.Favourites)
+            else if (nowOpen == userOrPublicOrFavourites.Favourites)
             {
                 await LoadRecipes(userOrPublicOrFavourites.Favourites, pageSize, --pageNumberFavouritesRecipes);
             }
@@ -429,11 +428,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             if (nowOpen == userOrPublicOrFavourites.User)
             {
-                await LoadRecipes(userOrPublicOrFavourites.User,pageSize, ++pageNumberUserRecipes);
+                await LoadRecipes(userOrPublicOrFavourites.User, pageSize, ++pageNumberUserRecipes);
             }
             else if (nowOpen == userOrPublicOrFavourites.Public)
             {
-                await LoadRecipes(userOrPublicOrFavourites.Public,pageSize, ++pageNumberPublicRecipes);
+                await LoadRecipes(userOrPublicOrFavourites.Public, pageSize, ++pageNumberPublicRecipes);
             }
             else if (nowOpen == userOrPublicOrFavourites.Favourites)
             {

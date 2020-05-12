@@ -3,14 +3,9 @@ using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Client_Desktop_Library.Helpers;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
-using Meziantou.Framework.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -128,7 +123,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             catch (Exception ex)
             {
                 _logger.Error("Got exception", ex);
-            }        
+            }
         }
 
 

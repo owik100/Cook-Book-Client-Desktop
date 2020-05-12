@@ -1,8 +1,5 @@
 ﻿using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -11,7 +8,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _appVersion;
         public AboutViewModel()
         {
-            AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();   
+            AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         #region Props

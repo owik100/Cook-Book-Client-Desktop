@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {

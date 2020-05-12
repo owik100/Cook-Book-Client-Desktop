@@ -2,10 +2,6 @@
 using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,14 +46,16 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
-       
+
 
         public string HelloMesage
         {
-            get { 
-                return _helloMesage; 
+            get
+            {
+                return _helloMesage;
             }
-            set {
+            set
+            {
                 _helloMesage = "Witaj " + value;
                 NotifyOfPropertyChange(() => HelloMesage);
             }
@@ -71,7 +69,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             _recipesViewModel.LogOffUser();
             NotifyOfPropertyChange(() => IsLogged);
             await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
-        } 
+        }
         public async Task About()
         {
             var windowsManager = new WindowManager();

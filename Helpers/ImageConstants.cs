@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Cook_Book_Client_Desktop.Helpers
+﻿namespace Cook_Book_Client_Desktop.Helpers
 {
     public static class ImageConstants
     {

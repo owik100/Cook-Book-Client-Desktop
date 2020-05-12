@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Cook_Book_Client_Desktop.EventsModels
+﻿namespace Cook_Book_Client_Desktop.EventsModels
 {
     public class ReloadAllRecipes
     {
@@ -13,7 +9,7 @@ namespace Cook_Book_Client_Desktop.EventsModels
         public userOrPublicOrFavourites userOrPublicOrFavourites { get; set; }
     }
 
-   
+
 
     public enum userOrPublicOrFavourites
     {

@@ -2,9 +2,9 @@
 
 namespace Cook_Book_Client_Desktop.EventsModels
 {
-   public class AddRecipeWindowEvent
+    public class AddRecipeWindowEvent
     {
-        public AddRecipeWindowEvent(AddOrEdit addOrEdit , RecipeModel recipeModel = null)
+        public AddRecipeWindowEvent(AddOrEdit addOrEdit, RecipeModel recipeModel = null)
         {
             RecipeModel = recipeModel;
             AddOrEdit = addOrEdit;

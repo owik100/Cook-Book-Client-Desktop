@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Cook_Book_Client_Desktop.EventsModels;
 using Cook_Book_Client_Desktop.Helpers;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -72,7 +65,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             catch (Exception ex)
             {
                 _logger.Error("Got exception", ex);
-            }          
+            }
         }
 
         #region Props
@@ -150,8 +143,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => IngredientInsert);
                 NotifyOfPropertyChange(() => CanAddIngredientTextBox);
             }
-        } 
-        
+        }
+
         public bool IsPublic
         {
             get { return _isPublic; }
@@ -215,7 +208,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 bool output = false;
 
-                if (!string.IsNullOrWhiteSpace(RecipeName) && !string.IsNullOrWhiteSpace(RecipeInstructions) && RecipeIngredients.Count>0)
+                if (!string.IsNullOrWhiteSpace(RecipeName) && !string.IsNullOrWhiteSpace(RecipeInstructions) && RecipeIngredients.Count > 0)
                 {
                     output = true;
                 }
@@ -302,7 +295,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
                     if (result)
                     {
-                        if(recipeModel.NameOfImage == "")
+                        if (recipeModel.NameOfImage == "")
                         {
                             recipeModel.NameOfImage = ImageConstants.DefaultImage;
                         }
@@ -311,7 +304,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                         NotifyOfPropertyChange(() => CanDeleteFileModel);
 
                         reloadNeeded = true;
-                        MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano", MessageBoxButton.OK,MessageBoxImage.Information);
+                        MessageBox.Show("Zaktualizowano pomyślnie!", "Zaktualizowano", MessageBoxButton.OK, MessageBoxImage.Information);
 
                         await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded), new CancellationToken());
                     }
@@ -364,7 +357,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
-            }      
+            }
         }
     }
 }

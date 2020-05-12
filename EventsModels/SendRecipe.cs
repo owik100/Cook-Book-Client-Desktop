@@ -11,6 +11,6 @@ namespace Cook_Book_Client_Desktop.EventsModels
         }
 
         public RecipeModel RecipeModel { get; private set; }
-        public userOrPublicOrFavourites BackTo  { get; private set; }
+        public userOrPublicOrFavourites BackTo { get; private set; }
     }
 }

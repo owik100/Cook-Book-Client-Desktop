@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace Cook_Book_Client_Desktop.Helpers
 {
-   public class PublicRecipeToColorConverter : IValueConverter
+    public class PublicRecipeToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

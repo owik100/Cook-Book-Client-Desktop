@@ -21,7 +21,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private string _recipeName;
         private List<string> _recipeIntegradts;
         private string _recipeInstructions;
-        private string _imagePath="";
+        private string _imagePath = "";
         private int _recipeId;
         private bool _canEdit;
         private string _userName;
@@ -63,8 +63,8 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 RecipeIngredients = (currentRecipe.Ingredients).ToList();
                 RecipeInstructions = currentRecipe.Instruction;
                 ImagePath = currentRecipe.ImagePath;
-                
-                if(!currentRecipe.IsPublic || currentRecipe.UserName == _loggedUser.UserName)
+
+                if (!currentRecipe.IsPublic || currentRecipe.UserName == _loggedUser.UserName)
                 {
                     CanEdit = true;
                     DisplayUserName = false;
@@ -77,7 +77,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     UserName = "Autor przepisu: " + currentRecipe.UserName;
                     CanAddDeleteFavourites = true;
 
-                    if(AlreadyFavourites())
+                    if (AlreadyFavourites())
                     {
                         _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Delete;
                         FavouritesImage = ImageConstants.StarFull;
@@ -94,7 +94,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
             catch (Exception ex)
             {
                 _logger.Error("Got exception", ex);
-            }  
+            }
         }
 
         #region Props
@@ -146,7 +146,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _userName = value;
                 NotifyOfPropertyChange(() => UserName);
             }
-        } 
+        }
         public string FavouritesImage
         {
             get { return _favouritesImage; }
@@ -165,7 +165,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _canEdit = value;
                 NotifyOfPropertyChange(() => CanEdit);
             }
-        } 
+        }
         public bool DisplayUserName
         {
             get { return _displayUserName; }
@@ -175,7 +175,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 NotifyOfPropertyChange(() => DisplayUserName);
             }
         }
-           public bool CanAddDeleteFavourites
+        public bool CanAddDeleteFavourites
         {
             get { return _canAddDeleteFavourites; }
             set
@@ -200,7 +200,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
             }
-            
+
         }
 
         public async Task EditRecipe()
@@ -220,12 +220,12 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć {currentRecipe.Name} ?", "Potwierdź usunięcie", MessageBoxButton.YesNo,MessageBoxImage.Warning);
+                MessageBoxResult messageBoxResult = MessageBox.Show($"Na pewno chcesz usunąć {currentRecipe.Name} ?", "Potwierdź usunięcie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     var result = await _recipesEndPointAPI.DeleteRecipe(currentRecipe.RecipeId.ToString());
 
-                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded:true), new CancellationToken());
+                    await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded: true), new CancellationToken());
                 }
             }
             catch (Exception ex)
@@ -239,7 +239,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
         {
             try
             {
-                if(_AddOrdDeleteFavourites == AddOrdDeleteFromFavourites.Add)
+                if (_AddOrdDeleteFavourites == AddOrdDeleteFromFavourites.Add)
                 {
                     _loggedUser.FavouriteRecipes.Add(_recipeId.ToString());
                 }
@@ -256,7 +256,7 @@ namespace Cook_Book_Client_Desktop.ViewModels
                     FavouriteRecipes = _loggedUser.FavouriteRecipes
                 };
 
-                 var result = await _aPIHelper.EditUser(loggedUser);
+                var result = await _aPIHelper.EditUser(loggedUser);
 
                 _reloadNeeded = true;
 
@@ -280,11 +280,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
 
         private bool AlreadyFavourites()
         {
-           bool output = false;
+            bool output = false;
 
             try
             {
-                if(_loggedUser.FavouriteRecipes.Contains(_recipeId.ToString()))
+                if (_loggedUser.FavouriteRecipes.Contains(_recipeId.ToString()))
                 {
                     output = true;
                 }
