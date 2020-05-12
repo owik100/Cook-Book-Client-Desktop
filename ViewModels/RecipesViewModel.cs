@@ -46,6 +46,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
         private bool _noRecipes;
         private bool _noFavouriteRecipes;
 
+        private bool _isLoading = false;
+        private bool _displayRecipes = true;
+
         public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IEventAggregator EventAggregator, IMapper mapper)
         {
             _mapper = mapper;
@@ -151,6 +154,25 @@ namespace Cook_Book_Client_Desktop.ViewModels
             }
         }
 
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                NotifyOfPropertyChange(() => IsLoading);
+            }
+        } 
+        public bool DisplayRecipes
+        {
+            get { return _displayRecipes; }
+            set
+            {
+                _displayRecipes = value;
+                NotifyOfPropertyChange(() => DisplayRecipes);
+            }
+        }
+
         public bool NoFavouriteRecipes
         {
             get { return _noFavouriteRecipes; }
@@ -176,6 +198,9 @@ namespace Cook_Book_Client_Desktop.ViewModels
             try
             {
                 tempRecipes.Clear();
+                IsLoading = true;
+                DisplayRecipes = false;
+
                 List<RecipeModel> recipes = new List<RecipeModel>();
 
                 if(userOrPublicOrFavourites == userOrPublicOrFavourites.User)
@@ -212,6 +237,11 @@ namespace Cook_Book_Client_Desktop.ViewModels
             {
                 _logger.Error("Got exception", ex);
                 MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+            finally
+            {
+                IsLoading = false;
+                DisplayRecipes = true;
             }
         }
 

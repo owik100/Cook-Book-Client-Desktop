@@ -8,6 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800"        
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:helpers="clr-namespace:Cook_Book_Client_Desktop.Helpers">
 
 
@@ -52,11 +53,12 @@
         </StackPanel>
 
 
-        <TextBlock Grid.Row="2" Margin="50,0,0,0" Visibility="{Binding NoRecipes, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">Nie masz żadnych przepisów. Dodaj kilka!</TextBlock>
-        <TextBlock Grid.Row="2" Margin="50,0,0,0" Visibility="{Binding NoFavouriteRecipes, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">Nie masz żadnych ulubionych przepisów. Dodaj jakieś naciskając gwiazdkę!</TextBlock>
+        <TextBlock Grid.Row="1" Panel.ZIndex="100" Visibility="{Binding NoRecipes, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center">Nie masz żadnych przepisów. Dodaj kilka!</TextBlock>
+        <TextBlock Grid.Row="1" Panel.ZIndex="100" Visibility="{Binding NoFavouriteRecipes, Converter={StaticResource BooleanToVisibilityConverter}}"  VerticalAlignment="Center" HorizontalAlignment="Center">Nie masz żadnych ulubionych przepisów. Dodaj jakieś naciskając gwiazdkę!</TextBlock>
 
+        <fa:ImageAwesome Grid.Row="1" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Icon="CircleOutlineNotch" Foreground="Orange" Spin="True" Height="48" Width="48" Panel.ZIndex="101" />
 
-        <ScrollViewer x:Name="MyScrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer x:Name="MyScrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Visibility="{Binding DisplayRecipes, Converter={StaticResource BooleanToVisibilityConverter}}" >
             <ListBox x:Name="Recipes" >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
