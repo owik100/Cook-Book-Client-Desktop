@@ -6,6 +6,7 @@
     <RootNamespace>Cook_Book_Client_Desktop</RootNamespace>
     <StartupObject>Cook_Book_Client_Desktop.Program</StartupObject>
     <ApplicationIcon>Resources\blankicon256.ico</ApplicationIcon>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>
