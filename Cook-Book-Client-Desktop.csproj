@@ -7,6 +7,10 @@
     <StartupObject>Cook_Book_Client_Desktop.Program</StartupObject>
     <ApplicationIcon>Resources\blankicon256.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\blankicon256.ico" />
     <None Remove="Resources\blankicon256.png" />

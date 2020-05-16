@@ -5,6 +5,7 @@ using Cook_Book_Shared_Code.Models;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Cook_Book_Client_Desktop.ViewModels
 {
@@ -147,6 +148,10 @@ namespace Cook_Book_Client_Desktop.ViewModels
                 Clear();
                 _duringOperation = false;
                 NotifyOfPropertyChange(() => CanRegister);
+
+
+                MessageBox.Show("Rejestracja pomyślna. Możesz się teraz zalogować", "Rejestracja pomyślna", MessageBoxButton.OK,MessageBoxImage.Information);
+                await Back();
             }
             catch (Exception ex)
             {
